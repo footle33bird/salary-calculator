@@ -71,15 +71,12 @@ let state = {
   months: null,
   monthIdx: null,
   insXL: false,
-  fitpass: false,
+  fitpassCount: 0,
   adds: {
     night: 0,
     holiday: 0,
     holidaynight: 0,
     ot: 0,
-    otnight: 0,
-    otholiday: 0,
-    otholidaynight: 0,
   },
 };
 let maxVisited = 0;
@@ -139,11 +136,43 @@ function toggleIns() {
   state.insXL = !state.insXL;
   document.getElementById("insToggle").classList.toggle("active", state.insXL);
 }
-function toggleFit() {
-  state.fitpass = !state.fitpass;
-  document
-    .getElementById("fitToggle")
-    .classList.toggle("active", state.fitpass);
+
+function incrementFitpass() {
+  const input = document.getElementById("fitpassCount");
+  const current = parseInt(input.value) || 0;
+  input.value = current + 1;
+}
+
+function decrementFitpass() {
+  const input = document.getElementById("fitpassCount");
+  const current = parseInt(input.value) || 0;
+  if (current > 0) {
+    input.value = current - 1;
+  }
+}
+
+function incrementFitpassResult() {
+  const input = document.getElementById("fitpassCountResult");
+  const current = parseInt(input.value) || 0;
+  input.value = current + 1;
+  syncFitpassAndCalculate();
+}
+
+function decrementFitpassResult() {
+  const input = document.getElementById("fitpassCountResult");
+  const current = parseInt(input.value) || 0;
+  if (current > 0) {
+    input.value = current - 1;
+    syncFitpassAndCalculate();
+  }
+}
+
+function syncFitpassAndCalculate() {
+  const resultInput = document.getElementById("fitpassCountResult");
+  const mainInput = document.getElementById("fitpassCount");
+  state.fitpassCount = parseInt(resultInput.value) || 0;
+  mainInput.value = state.fitpassCount;
+  calculate();
 }
 
 document.getElementById("months").addEventListener("input", function () {
@@ -246,9 +275,8 @@ function calculate() {
   state.adds.holiday = getVal("add_holiday");
   state.adds.holidaynight = getVal("add_holidaynight");
   state.adds.ot = getVal("add_ot");
-  state.adds.otnight = getVal("add_otnight");
-  state.adds.otholiday = getVal("add_otholiday");
-  state.adds.otholidaynight = getVal("add_otholidaynight");
+  state.fitpassCount =
+    parseInt(document.getElementById("fitpassCount").value) || 0;
 
   const base = getBaseSalary(),
     hourly = getHourlyRate(),
@@ -259,19 +287,9 @@ function calculate() {
   const holidayAmt = state.adds.holiday * hourly * 1.25;
   const holidaynightAmt = state.adds.holidaynight * hourly * 1.5;
   const otAmt = state.adds.ot * hourly * 2.0;
-  const otnightAmt = state.adds.otnight * hourly * 3.4;
-  const otholidayAmt = state.adds.otholiday * hourly * 3.25;
-  const otholidaynightAmt = state.adds.otholidaynight * hourly * 3.5;
 
-  const totalAdds =
-    nightAmt +
-    holidayAmt +
-    holidaynightAmt +
-    otAmt +
-    otnightAmt +
-    otholidayAmt +
-    otholidaynightAmt;
-  const deductions = (state.insXL ? 33 : 0) + (state.fitpass ? 88 : 0);
+  const totalAdds = nightAmt + holidayAmt + holidaynightAmt + otAmt;
+  const deductions = (state.insXL ? 33 : 0) + state.fitpassCount * 88;
   const total = base + totalAdds - deductions;
 
   renderResult(base, gross, hourly, totalAdds, deductions, total, m, {
@@ -279,9 +297,6 @@ function calculate() {
     holidayAmt,
     holidaynightAmt,
     otAmt,
-    otnightAmt,
-    otholidayAmt,
-    otholidaynightAmt,
   });
   if (3 > maxVisited) maxVisited = 3;
   setStep(3);
@@ -310,12 +325,6 @@ function renderResult(
     { label: "🎌 Bank Holiday", val: adds.holidayAmt },
     { label: "🌙🎌 Holiday Night", val: adds.holidaynightAmt },
     { label: "⏱ Overtime", val: adds.otAmt },
-    { label: "⏱🌙 Overtime Night", val: adds.otnightAmt },
-    { label: "⏱🎌 Overtime Holiday", val: adds.otholidayAmt },
-    {
-      label: "⏱🌙🎌 Overtime Holiday Night",
-      val: adds.otholidaynightAmt,
-    },
   ];
   const addRows = addDefs
     .filter((a) => a.val > 0)
@@ -361,7 +370,7 @@ function renderResult(
           ${addRows}
           ${totalAdds > 0 ? `<div class="result-row"><span class="result-row-label">Total Additions</span><span class="result-row-val positive">+${totalAdds.toFixed(2)} ₾</span></div>` : ""}
           ${state.insXL ? `<div class="result-row"><span class="result-row-label">XL Insurance</span><span class="result-row-val negative">−33.00 ₾</span></div>` : ""}
-          ${state.fitpass ? `<div class="result-row"><span class="result-row-label">FitPass</span><span class="result-row-val negative">−88.00 ₾</span></div>` : ""}
+          ${state.fitpassCount > 0 ? `<div class="result-row"><span class="result-row-label">FitPass (${state.fitpassCount}x)</span><span class="result-row-val negative">−${(state.fitpassCount * 88).toFixed(2)} ₾</span></div>` : ""}
           <div class="result-final-row">
             <span class="result-final-label">Final Amount</span>
             <span class="result-final-value">₾${total.toFixed(2)}</span>
@@ -376,10 +385,33 @@ function renderResult(
           <div class="toggle-left"><span class="toggle-name">XL Insurance</span><span class="toggle-meta">−33.00 GEL / month</span></div>
           <div class="toggle-switch"></div>
         </div>
-        <div class="toggle-row ${state.fitpass ? "active" : ""}" id="resFitToggle"
-          onclick="state.fitpass=!state.fitpass;document.getElementById('resFitToggle').classList.toggle('active',state.fitpass);calculate();">
-          <div class="toggle-left"><span class="toggle-name">FitPass Subscription</span><span class="toggle-meta">−88.00 GEL / month</span></div>
-          <div class="toggle-switch"></div>
+        <div class="toggle-row">
+          <div class="toggle-left">
+            <span class="toggle-name">FitPass Subscriptions</span><span class="toggle-meta">−88.00 GEL / subscription / month</span>
+          </div>
+          <div class="fitpass-control">
+            <button class="fitpass-btn" onclick="decrementFitpassResult()">−</button>
+            <input
+              type="number"
+              id="fitpassCountResult"
+              value="${state.fitpassCount}"
+              placeholder="0"
+              min="0"
+              style="
+                width: 50px;
+                flex-shrink: 0;
+                border: 1px solid var(--border2);
+                border-radius: 6px;
+                padding: 8px 4px;
+                background: var(--input-bg);
+                color: var(--text);
+                font-family: 'DM Mono', monospace;
+                text-align: center;
+              "
+              onchange="syncFitpassAndCalculate()"
+            />
+            <button class="fitpass-btn" onclick="incrementFitpassResult()">+</button>
+          </div>
         </div>
       </div>
 
@@ -400,7 +432,7 @@ function resetAll() {
     months: null,
     monthIdx: null,
     insXL: false,
-    fitpass: false,
+    fitpassCount: 0,
     adds: {},
   };
   maxVisited = 0;
@@ -410,16 +442,8 @@ function resetAll() {
   document.getElementById("months").value = "";
   document.getElementById("tierLabel").textContent = "";
   document.getElementById("insToggle").classList.remove("active");
-  document.getElementById("fitToggle").classList.remove("active");
-  [
-    "add_night",
-    "add_holiday",
-    "add_holidaynight",
-    "add_ot",
-    "add_otnight",
-    "add_otholiday",
-    "add_otholidaynight",
-  ].forEach((id) => {
+  document.getElementById("fitpassCount").value = "";
+  ["add_night", "add_holiday", "add_holidaynight", "add_ot"].forEach((id) => {
     const el = document.getElementById(id);
     if (el) el.value = "";
   });

@@ -538,12 +538,39 @@
         </div>
         <div class="field-group">
           <label class="field-label">FitPass</label>
-          <div class="toggle-row" id="fitToggle" onclick="toggleFit()">
+          <div class="toggle-row" style="justify-content: space-between">
             <div class="toggle-left">
-              <span class="toggle-name">FitPass Subscription</span
-              ><span class="toggle-meta">−88.00 GEL / month</span>
+              <span class="toggle-name">FitPass Subscriptions</span
+              ><span class="toggle-meta"
+                >−88.00 GEL / subscription / month</span
+              >
             </div>
-            <div class="toggle-switch"></div>
+            <div class="fitpass-control">
+              <button class="fitpass-btn" onclick="decrementFitpass()">
+                −
+              </button>
+              <input
+                type="number"
+                id="fitpassCount"
+                placeholder="0"
+                min="0"
+                style="
+                  width: 50px;
+                  flex-shrink: 0;
+                  border: 1px solid var(--border2);
+                  border-radius: 6px;
+                  padding: 8px 4px;
+                  background: var(--input-bg);
+                  color: var(--text);
+                  font-family: &quot;DM Mono&quot;, monospace;
+                  text-align: center;
+                "
+                onchange="calculate()"
+              />
+              <button class="fitpass-btn" onclick="incrementFitpass()">
+                +
+              </button>
+            </div>
           </div>
         </div>
         <hr class="divider" />
@@ -574,26 +601,6 @@
               <label>⏱ Overtime Hours</label>
               <span class="rate">hourly × 2.0</span>
               <input type="number" id="add_ot" placeholder="0" min="0" />
-            </div>
-            <div class="addition-field">
-              <label>⏱🌙 Overtime Night</label>
-              <span class="rate">hourly × 3.4</span>
-              <input type="number" id="add_otnight" placeholder="0" min="0" />
-            </div>
-            <div class="addition-field">
-              <label>⏱🎌 Overtime Holiday</label>
-              <span class="rate">hourly × 3.25</span>
-              <input type="number" id="add_otholiday" placeholder="0" min="0" />
-            </div>
-            <div class="addition-field" style="grid-column: 1/-1">
-              <label>⏱🌙🎌 Overtime Holiday Night</label>
-              <span class="rate">hourly × 3.5</span>
-              <input
-                type="number"
-                id="add_otholidaynight"
-                placeholder="0"
-                min="0"
-              />
             </div>
           </div>
         </div>

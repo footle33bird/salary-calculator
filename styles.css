@@ -776,3 +776,34 @@ select option {
   margin-top: 6px;
   font-family: "DM Mono", monospace;
 }
+
+/* ── FITPASS CONTROL ── */
+.fitpass-control {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.fitpass-btn {
+  width: 32px;
+  height: 32px;
+  border: 1px solid var(--border2);
+  border-radius: 6px;
+  background: var(--surface);
+  color: var(--text);
+  font-family: "DM Mono", monospace;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+.fitpass-btn:hover {
+  border-color: var(--accent-border);
+  color: var(--accent);
+}
+.fitpass-btn:active {
+  transform: scale(0.95);
+}
