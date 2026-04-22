@@ -565,7 +565,6 @@
                   font-family: &quot;DM Mono&quot;, monospace;
                   text-align: center;
                 "
-                onchange="calculate()"
               />
               <button class="fitpass-btn" onclick="incrementFitpass()">
                 +
@@ -600,7 +599,7 @@
                   font-family: &quot;DM Mono&quot;, monospace;
                   text-align: center;
                 "
-                onchange="calculate()"
+                onkeydown="handleUnpaidLeavesArrowKeys(event)"
               />
               <button class="fitpass-btn" onclick="incrementUnpaidLeaves()">
                 +

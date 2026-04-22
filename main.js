@@ -190,6 +190,21 @@ function decrementUnpaidLeaves() {
   }
 }
 
+function handleUnpaidLeavesArrowKeys(event) {
+  const input = document.getElementById("unpaidLeavesCount");
+  const current = parseInt(input.value) || 0;
+
+  if (event.key === "ArrowUp") {
+    event.preventDefault();
+    input.value = current + 1;
+  } else if (event.key === "ArrowDown") {
+    event.preventDefault();
+    if (current > 0) {
+      input.value = current - 1;
+    }
+  }
+}
+
 function incrementUnpaidLeavesResult() {
   const input = document.getElementById("unpaidLeavesCountResult");
   const current = parseInt(input.value) || 0;
