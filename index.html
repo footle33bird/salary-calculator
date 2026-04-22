@@ -573,6 +573,41 @@
             </div>
           </div>
         </div>
+        <div class="field-group">
+          <label class="field-label">Unpaid Leaves</label>
+          <div class="toggle-row" style="justify-content: space-between">
+            <div class="toggle-left">
+              <span class="toggle-name">Unpaid Leave Days</span
+              ><span class="toggle-meta">−1 day / month</span>
+            </div>
+            <div class="fitpass-control">
+              <button class="fitpass-btn" onclick="decrementUnpaidLeaves()">
+                −
+              </button>
+              <input
+                type="number"
+                id="unpaidLeavesCount"
+                placeholder="0"
+                min="0"
+                style="
+                  width: 50px;
+                  flex-shrink: 0;
+                  border: 1px solid var(--border2);
+                  border-radius: 6px;
+                  padding: 8px 4px;
+                  background: var(--input-bg);
+                  color: var(--text);
+                  font-family: &quot;DM Mono&quot;, monospace;
+                  text-align: center;
+                "
+                onchange="calculate()"
+              />
+              <button class="fitpass-btn" onclick="incrementUnpaidLeaves()">
+                +
+              </button>
+            </div>
+          </div>
+        </div>
         <hr class="divider" />
         <div class="field-group">
           <label class="field-label">Additional Hours</label>
