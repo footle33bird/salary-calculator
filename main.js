@@ -72,6 +72,7 @@ let state = {
   monthIdx: null,
   insXL: false,
   fitpassCount: 0,
+  unpaidLeavesCount: 0,
   adds: {
     night: 0,
     holiday: 0,
@@ -172,6 +173,44 @@ function syncFitpassAndCalculate() {
   const mainInput = document.getElementById("fitpassCount");
   state.fitpassCount = parseInt(resultInput.value) || 0;
   mainInput.value = state.fitpassCount;
+  calculate();
+}
+
+function incrementUnpaidLeaves() {
+  const input = document.getElementById("unpaidLeavesCount");
+  const current = parseInt(input.value) || 0;
+  input.value = current + 1;
+}
+
+function decrementUnpaidLeaves() {
+  const input = document.getElementById("unpaidLeavesCount");
+  const current = parseInt(input.value) || 0;
+  if (current > 0) {
+    input.value = current - 1;
+  }
+}
+
+function incrementUnpaidLeavesResult() {
+  const input = document.getElementById("unpaidLeavesCountResult");
+  const current = parseInt(input.value) || 0;
+  input.value = current + 1;
+  syncUnpaidLeavesAndCalculate();
+}
+
+function decrementUnpaidLeavesResult() {
+  const input = document.getElementById("unpaidLeavesCountResult");
+  const current = parseInt(input.value) || 0;
+  if (current > 0) {
+    input.value = current - 1;
+    syncUnpaidLeavesAndCalculate();
+  }
+}
+
+function syncUnpaidLeavesAndCalculate() {
+  const resultInput = document.getElementById("unpaidLeavesCountResult");
+  const mainInput = document.getElementById("unpaidLeavesCount");
+  state.unpaidLeavesCount = parseInt(resultInput.value) || 0;
+  mainInput.value = state.unpaidLeavesCount;
   calculate();
 }
 
@@ -277,6 +316,8 @@ function calculate() {
   state.adds.ot = getVal("add_ot");
   state.fitpassCount =
     parseInt(document.getElementById("fitpassCount").value) || 0;
+  state.unpaidLeavesCount =
+    parseInt(document.getElementById("unpaidLeavesCount").value) || 0;
 
   const base = getBaseSalary(),
     hourly = getHourlyRate(),
@@ -288,8 +329,13 @@ function calculate() {
   const holidaynightAmt = state.adds.holidaynight * hourly * 1.5;
   const otAmt = state.adds.ot * hourly * 2.0;
 
+  // Calculate daily deduction for unpaid leaves (month hours / 22 working days)
+  const dailyRate = hourly * (m.hours / 22);
+  const unpaidLeavesAmt = state.unpaidLeavesCount * dailyRate;
+
   const totalAdds = nightAmt + holidayAmt + holidaynightAmt + otAmt;
-  const deductions = (state.insXL ? 33 : 0) + state.fitpassCount * 88;
+  const deductions =
+    (state.insXL ? 33 : 0) + state.fitpassCount * 88 + unpaidLeavesAmt;
   const total = base + totalAdds - deductions;
 
   renderResult(base, gross, hourly, totalAdds, deductions, total, m, {
@@ -297,6 +343,7 @@ function calculate() {
     holidayAmt,
     holidaynightAmt,
     otAmt,
+    unpaidLeavesAmt,
   });
   if (3 > maxVisited) maxVisited = 3;
   setStep(3);
@@ -371,6 +418,7 @@ function renderResult(
           ${totalAdds > 0 ? `<div class="result-row"><span class="result-row-label">Total Additions</span><span class="result-row-val positive">+${totalAdds.toFixed(2)} ₾</span></div>` : ""}
           ${state.insXL ? `<div class="result-row"><span class="result-row-label">XL Insurance</span><span class="result-row-val negative">−33.00 ₾</span></div>` : ""}
           ${state.fitpassCount > 0 ? `<div class="result-row"><span class="result-row-label">FitPass (${state.fitpassCount}x)</span><span class="result-row-val negative">−${(state.fitpassCount * 88).toFixed(2)} ₾</span></div>` : ""}
+          ${state.unpaidLeavesCount > 0 ? `<div class="result-row"><span class="result-row-label">Unpaid Leaves (${state.unpaidLeavesCount}d)</span><span class="result-row-val negative">−${adds.unpaidLeavesAmt.toFixed(2)} ₾</span></div>` : ""}
           <div class="result-final-row">
             <span class="result-final-label">Final Amount</span>
             <span class="result-final-value">₾${total.toFixed(2)}</span>
@@ -413,6 +461,34 @@ function renderResult(
             <button class="fitpass-btn" onclick="incrementFitpassResult()">+</button>
           </div>
         </div>
+        <div class="toggle-row">
+          <div class="toggle-left">
+            <span class="toggle-name">Unpaid Leave Days</span><span class="toggle-meta">−1 day / month</span>
+          </div>
+          <div class="fitpass-control">
+            <button class="fitpass-btn" onclick="decrementUnpaidLeavesResult()">−</button>
+            <input
+              type="number"
+              id="unpaidLeavesCountResult"
+              value="${state.unpaidLeavesCount}"
+              placeholder="0"
+              min="0"
+              style="
+                width: 50px;
+                flex-shrink: 0;
+                border: 1px solid var(--border2);
+                border-radius: 6px;
+                padding: 8px 4px;
+                background: var(--input-bg);
+                color: var(--text);
+                font-family: 'DM Mono', monospace;
+                text-align: center;
+              "
+              onchange="syncUnpaidLeavesAndCalculate()"
+            />
+            <button class="fitpass-btn" onclick="incrementUnpaidLeavesResult()">+</button>
+          </div>
+        </div>
       </div>
 
       <div class="note-box">
@@ -433,6 +509,7 @@ function resetAll() {
     monthIdx: null,
     insXL: false,
     fitpassCount: 0,
+    unpaidLeavesCount: 0,
     adds: {},
   };
   maxVisited = 0;
@@ -443,6 +520,7 @@ function resetAll() {
   document.getElementById("tierLabel").textContent = "";
   document.getElementById("insToggle").classList.remove("active");
   document.getElementById("fitpassCount").value = "";
+  document.getElementById("unpaidLeavesCount").value = "";
   ["add_night", "add_holiday", "add_holidaynight", "add_ot"].forEach((id) => {
     const el = document.getElementById(id);
     if (el) el.value = "";
