@@ -229,6 +229,21 @@ function decrementUnpaidLeaves() {
   }
 }
 
+function handleSnapArrowKeys(event) {
+  const input = document.getElementById("snapCount");
+  const current = parseInt(input.value) || 0;
+
+  if (event.key === "ArrowUp" || event.key === "ArrowRight") {
+    event.preventDefault();
+    input.value = current + 1;
+  } else if (event.key === "ArrowDown" || event.key === "ArrowLeft") {
+    event.preventDefault();
+    if (current > 0) {
+      input.value = current - 1;
+    }
+  }
+}
+
 function handleUnpaidLeavesArrowKeys(event) {
   const input = document.getElementById("unpaidLeavesCount");
   const current = parseInt(input.value) || 0;
