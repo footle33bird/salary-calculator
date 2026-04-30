@@ -8,16 +8,17 @@ async function initializeVisitorCounter() {
     const data = await response.json();
     countElement.textContent = data.value.toLocaleString();
   } catch (error) {
-    // Fallback to localStorage if API fails
-    let count = parseInt(localStorage.getItem("salarCalculatorVisits")) || 0;
-    count++;
-    localStorage.setItem("salarCalculatorVisits", count);
-    countElement.textContent = count.toLocaleString();
+    console.error("Failed to fetch visitor count:", error);
+    countElement.textContent = "—";
   }
 }
 
-// Initialize counter when page loads
-document.addEventListener("DOMContentLoaded", initializeVisitorCounter);
+// Initialize counter immediately on page load (before DOMContentLoaded)
+if (document.readyState === "loading") {
+  document.addEventListener("DOMContentLoaded", initializeVisitorCounter);
+} else {
+  initializeVisitorCounter();
+}
 
 const MONTHS = [
   {
