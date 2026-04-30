@@ -1,25 +1,3 @@
-// ── VISITOR COUNTER ──
-async function initializeVisitorCounter() {
-  const countElement = document.getElementById("visitorCount");
-  const apiUrl = "https://api.countapi.xyz/hit/salary-calc-footle33bird/visits";
-
-  try {
-    const response = await fetch(apiUrl);
-    const data = await response.json();
-    countElement.textContent = data.value.toLocaleString();
-  } catch (error) {
-    console.error("Failed to fetch visitor count:", error);
-    countElement.textContent = "—";
-  }
-}
-
-// Initialize counter immediately on page load (before DOMContentLoaded)
-if (document.readyState === "loading") {
-  document.addEventListener("DOMContentLoaded", initializeVisitorCounter);
-} else {
-  initializeVisitorCounter();
-}
-
 const MONTHS = [
   {
     name: "იანვარი",

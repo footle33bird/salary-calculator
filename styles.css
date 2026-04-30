@@ -807,38 +807,3 @@ select option {
 .fitpass-btn:active {
   transform: scale(0.95);
 }
-
-/* ── VISITOR COUNTER ── */
-.visitor-counter {
-  position: fixed;
-  top: 20px;
-  left: 20px;
-  z-index: 100;
-  background: var(--surface);
-  border: 1px solid var(--border2);
-  border-radius: 100px;
-  padding: 8px 14px;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  font-family: "DM Mono", monospace;
-  font-size: 10px;
-  letter-spacing: 0.1em;
-  color: var(--muted);
-  transition: all 0.2s ease;
-  user-select: none;
-}
-
-.visitor-counter:hover {
-  border-color: var(--accent-border);
-  color: var(--accent);
-}
-
-.visitor-icon {
-  font-size: 12px;
-}
-
-.visitor-count {
-  font-weight: 500;
-  min-width: 30px;
-}
