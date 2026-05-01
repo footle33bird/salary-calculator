@@ -2,12 +2,12 @@
  * MINIGAMES LAUNCHER — visible sidebar panel + modal system
  */
 (function () {
-  'use strict';
+  "use strict";
 
   /* ─────────────────────────────────────────
      STYLES
   ───────────────────────────────────────── */
-  const style = document.createElement('style');
+  const style = document.createElement("style");
   style.textContent = `
     /* ── SIDEBAR PANEL ── */
     #mg-panel {
@@ -228,8 +228,8 @@
   /* ─────────────────────────────────────────
      SIDEBAR PANEL HTML
   ───────────────────────────────────────── */
-  const panel = document.createElement('div');
-  panel.id = 'mg-panel';
+  const panel = document.createElement("div");
+  panel.id = "mg-panel";
   panel.innerHTML = `
     <div class="mg-panel-label">Games</div>
     <button class="mg-panel-btn" onclick="window.mgOpen('snake')" title="Snake">
@@ -254,8 +254,8 @@
   /* ─────────────────────────────────────────
      MODAL HTML
   ───────────────────────────────────────── */
-  const overlay = document.createElement('div');
-  overlay.id = 'mg-overlay';
+  const overlay = document.createElement("div");
+  overlay.id = "mg-overlay";
   overlay.innerHTML = `
     <div id="mg-modal">
       <div id="mg-topbar">
@@ -275,67 +275,71 @@
   /* ─────────────────────────────────────────
      TOAST
   ───────────────────────────────────────── */
-  const toast = document.createElement('div');
-  toast.id = 'mg-toast';
+  const toast = document.createElement("div");
+  toast.id = "mg-toast";
   document.body.appendChild(toast);
 
   function showToast(msg) {
     toast.textContent = msg;
-    toast.classList.add('show');
+    toast.classList.add("show");
     clearTimeout(toast._t);
-    toast._t = setTimeout(() => toast.classList.remove('show'), 2600);
+    toast._t = setTimeout(() => toast.classList.remove("show"), 2600);
   }
 
   /* ─────────────────────────────────────────
      MODAL API
   ───────────────────────────────────────── */
-  const modal  = document.getElementById('mg-modal');
-  const frame  = document.getElementById('mg-frame');
-  const label  = document.getElementById('mg-game-label');
+  const modal = document.getElementById("mg-modal");
+  const frame = document.getElementById("mg-frame");
+  const label = document.getElementById("mg-game-label");
   let isFullscreen = false;
 
   const GAMES = {
-    snake:  { icon: '🐍', name: 'Snake',  file: 'snake.html'  },
-    '2048': { icon: '🔢', name: '2048',   file: '2048.html'   },
-    sudoku: { icon: '🔷', name: 'Sudoku', file: 'sudoku.html' },
-    chess:  { icon: '♟',  name: 'Chess',  file: 'chess.html'  },
+    snake: { icon: "🐍", name: "Snake", file: "snake.html" },
+    2048: { icon: "🔢", name: "2048", file: "2048.html" },
+    sudoku: { icon: "🔷", name: "Sudoku", file: "sudoku.html" },
+    chess: { icon: "♟", name: "Chess", file: "chess.html" },
   };
 
   window.mgOpen = function (game) {
     const g = GAMES[game];
     if (!g) return;
-    label.textContent = g.icon + ' ' + g.name;
+    label.textContent = g.icon + " " + g.name;
     frame.src = g.file;
-    overlay.classList.add('open');
-    document.body.style.overflow = 'hidden';
-    showToast(g.icon + ' ' + g.name + ' — Press Esc to close');
+    overlay.classList.add("open");
+    document.body.style.overflow = "hidden";
+    showToast(g.icon + " " + g.name + " — Press Esc to close");
   };
 
   window.mgClose = function () {
-    overlay.classList.remove('open');
-    setTimeout(() => { frame.src = 'about:blank'; }, 250);
-    document.body.style.overflow = '';
+    overlay.classList.remove("open");
+    setTimeout(() => {
+      frame.src = "about:blank";
+    }, 250);
+    document.body.style.overflow = "";
     if (isFullscreen) {
-      modal.classList.remove('fullscreen');
+      modal.classList.remove("fullscreen");
       isFullscreen = false;
-      document.getElementById('mg-full-btn').textContent = '⛶ Fullscreen';
+      document.getElementById("mg-full-btn").textContent = "⛶ Fullscreen";
     }
   };
 
   window.mgToggleFull = function () {
     isFullscreen = !isFullscreen;
-    modal.classList.toggle('fullscreen', isFullscreen);
-    document.getElementById('mg-full-btn').textContent = isFullscreen ? '⛶ Exit Full' : '⛶ Fullscreen';
+    modal.classList.toggle("fullscreen", isFullscreen);
+    document.getElementById("mg-full-btn").textContent = isFullscreen
+      ? "⛶ Exit Full"
+      : "⛶ Fullscreen";
   };
 
   /* ── ESC to close ── */
-  document.addEventListener('keydown', e => {
-    if (e.key === 'Escape' && overlay.classList.contains('open')) window.mgClose();
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && overlay.classList.contains("open"))
+      window.mgClose();
   });
 
   /* ── click backdrop to close ── */
-  overlay.addEventListener('click', e => {
+  overlay.addEventListener("click", (e) => {
     if (e.target === overlay) window.mgClose();
   });
-
 })();
