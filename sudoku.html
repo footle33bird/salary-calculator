@@ -134,6 +134,12 @@ body {
 }
 .num-btn:hover{border-color:var(--accent-border);color:var(--accent);background:var(--accent-dim);}
 .num-btn.erase{font-size:12px;color:var(--muted);}
+.num-btn.num-done{
+  opacity:0;
+  pointer-events:none;
+  transform:scale(0.85);
+  transition:opacity 0.3s ease, transform 0.3s ease;
+}
 
 /* ── CONTROLS ── */
 .controls{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;}
@@ -312,6 +318,13 @@ function renderBoard() {
     b.appendChild(el);
   }
 
+  // count correct placements per digit
+  const counts = Array(10).fill(0);
+  for (let r=0; r<9; r++) for (let c=0; c<9; c++) {
+    const v = grid[r][c];
+    if (v && v === solution[r][c]) counts[v]++;
+  }
+
   // numpad
   const np = document.getElementById('numpad');
   np.innerHTML = '';
@@ -320,6 +333,7 @@ function renderBoard() {
     btn.className = 'num-btn';
     btn.textContent = n;
     btn.onclick = () => input(n);
+    if (counts[n] >= 9) btn.classList.add('num-done');
     np.appendChild(btn);
   }
   const er = document.createElement('button');
