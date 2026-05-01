@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>2048</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600&display=swap" rel="stylesheet"/>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+[data-theme="dark"] {
+  --bg: #0a0a0a;
+  --surface: #111111;
+  --surface2: #181818;
+  --border: rgba(255,255,255,0.08);
+  --border2: rgba(255,255,255,0.15);
+  --text: #f0ede8;
+  --muted: rgba(240,237,232,0.45);
+  --accent: #c8a96e;
+  --accent-dim: rgba(200,169,110,0.12);
+  --accent-border: rgba(200,169,110,0.3);
+  --accent-text: #0a0a0a;
+}
+[data-theme="light"] {
+  --bg: #f7f5f0;
+  --surface: #ffffff;
+  --surface2: #f0ede6;
+  --border: rgba(0,0,0,0.08);
+  --border2: rgba(0,0,0,0.16);
+  --text: #1a1814;
+  --muted: rgba(26,24,20,0.45);
+  --accent: #9e7a3f;
+  --accent-dim: rgba(158,122,63,0.10);
+  --accent-border: rgba(158,122,63,0.3);
+  --accent-text: #ffffff;
+}
+
+html, body {
+  width: 100%; height: 100%;
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'DM Mono', monospace;
+  overflow: hidden;
+}
+
+/* ── START SCREEN ── */
+#start-screen {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  background: var(--bg);
+  z-index: 100;
+}
+#start-screen.hidden { display: none; }
+
+.start-title {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 64px;
+  font-weight: 300;
+  font-style: italic;
+  color: var(--accent);
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+.start-sub {
+  font-size: 11px;
+  color: var(--muted);
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+.start-btn {
+  margin-top: 8px;
+  padding: 13px 32px;
+  background: var(--accent);
+  border: none;
+  border-radius: 8px;
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent-text);
+  cursor: pointer;
+  font-weight: 500;
+  transition: opacity 0.2s;
+}
+.start-btn:hover { opacity: 0.85; }
+
+/* ── GAME SCREEN ── */
+#game-screen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  padding: 16px;
+  gap: 14px;
+}
+#game-screen.hidden { display: none; }
+
+/* ── HUD ── */
+.hud {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+.hud-box {
+  background: var(--surface);
+  border: 1px solid var(--border2);
+  border-radius: 8px;
+  padding: 7px 16px;
+  text-align: center;
+  min-width: 80px;
+}
+.hud-label {
+  font-size: 8px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--muted);
+  display: block;
+  margin-bottom: 3px;
+}
+.hud-val {
+  font-size: 18px;
+  font-weight: 500;
+  color: var(--text);
+}
+
+/* ── BOARD ── */
+.board-wrap {
+  position: relative;
+}
+.board {
+  display: grid;
+  grid-template-columns: repeat(4, 90px);
+  grid-template-rows: repeat(4, 90px);
+  gap: 8px;
+  background: var(--surface);
+  border: 1px solid var(--accent-border);
+  border-radius: 12px;
+  padding: 10px;
+  box-shadow: 0 0 40px rgba(200,169,110,0.07);
+}
+
+/* ── TILES ── */
+.tile {
+  width: 90px;
+  height: 90px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 26px;
+  font-weight: 500;
+  transition: all 0.08s ease;
+  border: 1px solid;
+}
+.tile-0    { background: var(--surface2); border-color: var(--border); color: transparent; }
+.tile-2    { background: rgba(200,169,110,0.08); border-color: rgba(200,169,110,0.18); color: var(--text); }
+.tile-4    { background: rgba(200,169,110,0.15); border-color: rgba(200,169,110,0.28); color: var(--text); }
+.tile-8    { background: #b8955a; border-color: #c8a96e; color: #fff; }
+.tile-16   { background: #a07840; border-color: #c8a96e; color: #fff; }
+.tile-32   { background: #8c6028; border-color: #c8a96e; color: #fff; font-size: 22px; }
+.tile-64   { background: #6e4a14; border-color: #c8a96e; color: #f0ede8; font-size: 22px; }
+.tile-128  { background: #c8a96e; border-color: #e0c080; color: #0a0a0a; font-size: 19px; }
+.tile-256  { background: #d4b870; border-color: #e8d090; color: #0a0a0a; font-size: 19px; }
+.tile-512  { background: #e0c880; border-color: #f0e0a0; color: #0a0a0a; font-size: 19px; }
+.tile-1024 { background: #e8d890; border-color: #f8ebb0; color: #0a0a0a; font-size: 15px; }
+.tile-2048 { background: #f0e8a0; border-color: #fff8c0; color: #0a0a0a; font-size: 15px; box-shadow: 0 0 24px rgba(240,232,160,0.4); }
+.tile-4096 { background: #ffe0b0; border-color: #ffd090; color: #0a0a0a; font-size: 13px; }
+
+.tile.pop {
+  animation: tilePop 0.12s ease;
+}
+@keyframes tilePop {
+  0%   { transform: scale(1); }
+  50%  { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
+
+/* ── GAMEOVER OVERLAY (on top of board only) ── */
+.board-over {
+  position: absolute;
+  inset: 0;
+  background: rgba(10,10,10,0.86);
+  border-radius: 12px;
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  z-index: 10;
+}
+.board-over.visible { display: flex; }
+.over-title {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 38px;
+  font-weight: 300;
+  font-style: italic;
+  color: var(--accent);
+}
+.over-score {
+  font-size: 12px;
+  color: var(--muted);
+  letter-spacing: 0.1em;
+}
+.over-btn {
+  padding: 10px 24px;
+  background: var(--accent);
+  border: none;
+  border-radius: 7px;
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent-text);
+  cursor: pointer;
+  font-weight: 500;
+  transition: opacity 0.2s;
+}
+.over-btn:hover { opacity: 0.85; }
+
+/* ── CONTROLS ── */
+.controls {
+  display: flex;
+  gap: 8px;
+}
+.btn {
+  padding: 9px 20px;
+  border-radius: 7px;
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  cursor: pointer;
+  border: 1px solid;
+  transition: all 0.18s ease;
+}
+.btn-primary {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--accent-text);
+  font-weight: 500;
+}
+.btn-primary:hover { opacity: 0.85; }
+.btn-ghost {
+  background: transparent;
+  border-color: var(--border2);
+  color: var(--muted);
+}
+.btn-ghost:hover { color: var(--text); border-color: var(--accent-border); }
+
+.win-badge {
+  background: var(--accent-dim);
+  border: 1px solid var(--accent-border);
+  border-radius: 100px;
+  padding: 5px 14px;
+  font-size: 10px;
+  color: var(--accent);
+  letter-spacing: 0.1em;
+  display: none;
+}
+.win-badge.visible { display: inline-block; }
+
+.note {
+  font-size: 10px;
+  color: var(--muted);
+  letter-spacing: 0.08em;
+}
+
+/* ── SCROLLBAR ── */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 100px; }
+::-webkit-scrollbar-thumb:hover { background: var(--accent-border); }
+::-webkit-scrollbar-corner { background: var(--bg); }
+* { scrollbar-width: thin; scrollbar-color: var(--border2) var(--bg); }
+</style>
+</head>
+<body>
+
+<!-- START SCREEN -->
+<div id="start-screen">
+  <div class="start-title">2048</div>
+  <div class="start-sub">Merge tiles to reach 2048</div>
+  <button class="start-btn" onclick="startGame()">Start Game ✦</button>
+</div>
+
+<!-- GAME SCREEN -->
+<div id="game-screen" class="hidden">
+  <div class="hud">
+    <div class="hud-box">
+      <span class="hud-label">Score</span>
+      <span class="hud-val" id="score">0</span>
+    </div>
+    <div class="hud-box">
+      <span class="hud-label">Best</span>
+      <span class="hud-val" id="best">0</span>
+    </div>
+  </div>
+
+  <div class="win-badge" id="winBadge">✦ You reached 2048!</div>
+
+  <div class="board-wrap">
+    <div class="board" id="board"></div>
+    <div class="board-over" id="boardOver">
+      <div class="over-title" id="overTitle">Game Over</div>
+      <div class="over-score" id="overScore"></div>
+      <button class="over-btn" onclick="startGame()">↺ Try Again</button>
+    </div>
+  </div>
+
+  <div class="controls">
+    <button class="btn btn-primary" onclick="startGame()">↺ New Game</button>
+    <button class="btn btn-ghost" onclick="undoMove()">↩ Undo</button>
+  </div>
+  <div class="note">Arrow keys · WASD · Swipe to merge tiles</div>
+</div>
+
+<script>
+let board, score, best = 0, won = false, history = [];
+
+function startGame() {
+  board = Array.from({ length: 4 }, () => Array(4).fill(0));
+  score = 0; won = false; history = [];
+  addTile(); addTile();
+  document.getElementById('start-screen').classList.add('hidden');
+  document.getElementById('game-screen').classList.remove('hidden');
+  document.getElementById('boardOver').classList.remove('visible');
+  document.getElementById('winBadge').classList.remove('visible');
+  render();
+}
+
+function addTile() {
+  const empty = [];
+  for (let r = 0; r < 4; r++)
+    for (let c = 0; c < 4; c++)
+      if (board[r][c] === 0) empty.push({ r, c });
+  if (!empty.length) return null;
+  const { r, c } = empty[Math.floor(Math.random() * empty.length)];
+  board[r][c] = Math.random() < 0.9 ? 2 : 4;
+  return { r, c };
+}
+
+function render(newCell) {
+  const b = document.getElementById('board');
+  b.innerHTML = '';
+  for (let r = 0; r < 4; r++) {
+    for (let c = 0; c < 4; c++) {
+      const v = board[r][c];
+      const el = document.createElement('div');
+      el.className = 'tile tile-' + (v > 4096 ? 4096 : v);
+      el.textContent = v || '';
+      if (newCell && newCell.r === r && newCell.c === c) el.classList.add('pop');
+      b.appendChild(el);
+    }
+  }
+  document.getElementById('score').textContent = score;
+  if (score > best) {
+    best = score;
+    document.getElementById('best').textContent = best;
+  }
+}
+
+function slide(row) {
+  let arr = row.filter(x => x);
+  for (let i = 0; i < arr.length - 1; i++) {
+    if (arr[i] === arr[i + 1]) {
+      arr[i] *= 2;
+      score += arr[i];
+      arr.splice(i + 1, 1);
+    }
+  }
+  while (arr.length < 4) arr.push(0);
+  return arr;
+}
+
+function move(dir) {
+  const prev = board.map(r => [...r]);
+  let changed = false;
+
+  if (dir === 'left') {
+    for (let r = 0; r < 4; r++) {
+      const n = slide(board[r]);
+      if (n.some((v, i) => v !== board[r][i])) { board[r] = n; changed = true; }
+    }
+  } else if (dir === 'right') {
+    for (let r = 0; r < 4; r++) {
+      const n = slide([...board[r]].reverse()).reverse();
+      if (n.some((v, i) => v !== board[r][i])) { board[r] = n; changed = true; }
+    }
+  } else if (dir === 'up') {
+    for (let c = 0; c < 4; c++) {
+      const col = board.map(r => r[c]);
+      const n = slide(col);
+      n.forEach((v, r) => { if (v !== board[r][c]) { board[r][c] = v; changed = true; } });
+    }
+  } else if (dir === 'down') {
+    for (let c = 0; c < 4; c++) {
+      const col = board.map(r => r[c]).reverse();
+      const n = slide(col).reverse();
+      n.forEach((v, r) => { if (v !== board[r][c]) { board[r][c] = v; changed = true; } });
+    }
+  }
+
+  if (!changed) return;
+  history.push({ board: prev.map(r => [...r]), score });
+  const nc = addTile();
+
+  if (!won && board.flat().includes(2048)) {
+    won = true;
+    document.getElementById('winBadge').classList.add('visible');
+  }
+
+  render(nc);
+
+  if (isGameOver()) {
+    document.getElementById('overTitle').textContent = 'Game Over';
+    document.getElementById('overScore').textContent = 'Score: ' + score;
+    document.getElementById('boardOver').classList.add('visible');
+  }
+}
+
+function undoMove() {
+  if (!history.length) return;
+  const h = history.pop();
+  board = h.board;
+  score = h.score;
+  render();
+  document.getElementById('boardOver').classList.remove('visible');
+}
+
+function isGameOver() {
+  for (let r = 0; r < 4; r++)
+    for (let c = 0; c < 4; c++) {
+      if (board[r][c] === 0) return false;
+      if (c < 3 && board[r][c] === board[r][c + 1]) return false;
+      if (r < 3 && board[r][c] === board[r + 1][c]) return false;
+    }
+  return true;
+}
+
+// Keyboard
+document.addEventListener('keydown', e => {
+  if (document.getElementById('start-screen').classList.contains('hidden') === false) return;
+  const map = { ArrowLeft: 'left', ArrowRight: 'right', ArrowUp: 'up', ArrowDown: 'down', a: 'left', d: 'right', w: 'up', s: 'down' };
+  if (map[e.key]) { e.preventDefault(); move(map[e.key]); }
+});
+
+// Touch swipe
+let tx, ty;
+document.addEventListener('touchstart', e => { tx = e.touches[0].clientX; ty = e.touches[0].clientY; }, { passive: true });
+document.addEventListener('touchend', e => {
+  if (!tx) return;
+  const dx = e.changedTouches[0].clientX - tx;
+  const dy = e.changedTouches[0].clientY - ty;
+  if (Math.abs(dx) > Math.abs(dy)) { if (Math.abs(dx) > 30) move(dx > 0 ? 'right' : 'left'); }
+  else { if (Math.abs(dy) > 30) move(dy > 0 ? 'down' : 'up'); }
+  tx = ty = null;
+}, { passive: true });
+
+// Theme sync from parent
+try {
+  const t = window.parent.document.documentElement.getAttribute('data-theme');
+  if (t) document.documentElement.setAttribute('data-theme', t);
+} catch (e) {}
+</script>
+</body>
+</html>
