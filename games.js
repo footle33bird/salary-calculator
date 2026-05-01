@@ -172,13 +172,12 @@
     #mg-frame-wrap {
       flex: 1;
       position: relative;
-      overflow: auto;
+      overflow: hidden;
       min-height: 0;
     }
     #mg-frame {
       width: 100%;
       height: 100%;
-      min-height: 600px;
       border: none;
       display: block;
       background: var(--bg, #0a0a0a);
@@ -248,6 +247,10 @@
       <span class="mg-panel-icon">♟</span>
       <span class="mg-panel-name">Chess</span>
     </button>
+    <button class="mg-panel-btn" onclick="window.mgOpen('tetris')" title="Tetris">
+      <span class="mg-panel-icon">🟧</span>
+      <span class="mg-panel-name">Tetris</span>
+    </button>
   `;
   document.body.appendChild(panel);
 
@@ -299,6 +302,7 @@
     2048: { icon: "🔢", name: "2048", file: "2048.html" },
     sudoku: { icon: "🔷", name: "Sudoku", file: "sudoku.html" },
     chess: { icon: "♟", name: "Chess", file: "chess.html" },
+    tetris: { icon: "🟧", name: "Tetris", file: "tetris.html" },
   };
 
   window.mgOpen = function (game) {
