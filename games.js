@@ -49,7 +49,7 @@
     }
     .mg-panel-btn:hover {
       width: 148px;
-      border-color: var(--accent-border, rgba(200,169,110,0.35));
+      border-color: var(--accent-border, rgba(0,157,224,0.35));
       background: var(--surface2, #181818);
       box-shadow: 0 4px 20px rgba(0,0,0,0.3);
     }
@@ -65,7 +65,7 @@
       font-size: 10px;
       letter-spacing: 0.12em;
       text-transform: uppercase;
-      color: var(--accent, #c8a96e);
+      color: var(--accent, #009de0);
       opacity: 0;
       transition: opacity 0.15s ease;
       pointer-events: none;
@@ -99,14 +99,14 @@
       width: min(94vw, 920px);
       height: min(90vh, 740px);
       background: var(--surface, #111);
-      border: 1px solid var(--accent-border, rgba(200,169,110,0.25));
+      border: 1px solid var(--accent-border, rgba(0,157,224,0.25));
       border-radius: 18px;
       display: flex;
       flex-direction: column;
       overflow: hidden;
       box-shadow:
         0 40px 100px rgba(0,0,0,0.7),
-        0 0 0 1px rgba(200,169,110,0.06),
+        0 0 0 1px rgba(0,157,224,0.06),
         inset 0 1px 0 rgba(255,255,255,0.04);
       animation: mgSlideUp 0.3s cubic-bezier(0.22,1,0.36,1);
     }
@@ -137,7 +137,7 @@
       font-size: 11px;
       letter-spacing: 0.15em;
       text-transform: uppercase;
-      color: var(--accent, #c8a96e);
+      color: var(--accent, #009de0);
     }
     #mg-topbar-btns {
       display: flex;
@@ -161,7 +161,7 @@
     }
     .mg-tb-btn:hover {
       color: var(--text, #f0ede8);
-      border-color: var(--accent-border, rgba(200,169,110,0.3));
+      border-color: var(--accent-border, rgba(0,157,224,0.3));
     }
     .mg-tb-btn.close-btn:hover {
       color: #e06060;
@@ -190,13 +190,13 @@
       left: 50%;
       transform: translateX(-50%);
       background: var(--surface, #111);
-      border: 1px solid var(--accent-border, rgba(200,169,110,0.3));
+      border: 1px solid var(--accent-border, rgba(0,157,224,0.3));
       border-radius: 100px;
       padding: 9px 20px;
       font-family: 'DM Mono', monospace;
       font-size: 10px;
       letter-spacing: 0.14em;
-      color: var(--accent, #c8a96e);
+      color: var(--accent, #009de0);
       white-space: nowrap;
       z-index: 9999;
       pointer-events: none;
@@ -206,9 +206,102 @@
     }
     #mg-toast.show { opacity: 1; }
 
-    /* ── RESPONSIVE: hide panel on small screens ── */
+    /* ── MOBILE FAB ── */
+    #mg-fab {
+      display: none;
+      position: fixed;
+      bottom: 28px;
+      right: 20px;
+      z-index: 850;
+      height: 44px;
+      padding: 0 18px 0 14px;
+      border-radius: 100px;
+      background: var(--surface, #111);
+      border: 1px solid var(--accent-border, rgba(0,157,224,0.35));
+      color: var(--accent, #009de0);
+      font-family: 'DM Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      cursor: pointer;
+      gap: 8px;
+      align-items: center;
+      justify-content: center;
+      white-space: nowrap;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.5), 0 0 0 1px rgba(0,157,224,0.08);
+      transition: transform 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease;
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
+    #mg-fab:active {
+      transform: scale(0.94);
+      box-shadow: 0 2px 10px rgba(0,0,0,0.4);
+    }
+
+    /* ── RESPONSIVE: hide panel, show FAB on small screens ── */
     @media (max-width: 860px) {
       #mg-panel { display: none; }
+      #mg-fab   { display: flex; }
+    }
+
+    /* ── MOBILE PICKER SHEET ── */
+    #mg-picker-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 860;
+      background: rgba(0,0,0,0.55);
+      backdrop-filter: blur(4px);
+    }
+    #mg-picker-backdrop.open { display: block; }
+
+    #mg-picker {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 870;
+      background: var(--surface, #111);
+      border-top: 1px solid var(--border2, rgba(255,255,255,0.14));
+      border-radius: 20px 20px 0 0;
+      padding: 12px 20px 40px;
+      transform: translateY(100%);
+      transition: transform 0.32s cubic-bezier(0.22,1,0.36,1);
+    }
+    #mg-picker.open { transform: translateY(0); }
+
+    #mg-picker-handle {
+      width: 36px;
+      height: 4px;
+      background: var(--border2, rgba(255,255,255,0.18));
+      border-radius: 100px;
+      margin: 0 auto 18px;
+    }
+    #mg-picker-title {
+      font-family: 'DM Mono', monospace;
+      font-size: 9px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--muted, rgba(240,237,232,0.45));
+      margin-bottom: 14px;
+    }
+    .mg-picker-row {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 13px 4px;
+      border-bottom: 1px solid var(--border, rgba(255,255,255,0.07));
+      cursor: pointer;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .mg-picker-row:last-child { border-bottom: none; }
+    .mg-picker-row:active { opacity: 0.65; }
+    .mg-picker-icon { font-size: 22px; line-height: 1; }
+    .mg-picker-name {
+      font-family: 'DM Mono', monospace;
+      font-size: 13px;
+      letter-spacing: 0.06em;
+      color: var(--text, #f0ede8);
     }
 
     /* ── SCROLLBAR (modal frame wrapper) ── */
@@ -219,10 +312,54 @@
       border-radius: 100px;
     }
     #mg-frame-wrap::-webkit-scrollbar-thumb:hover {
-      background: var(--accent-border, rgba(200,169,110,0.3));
+      background: var(--accent-border, rgba(0,157,224,0.3));
     }
   `;
   document.head.appendChild(style);
+
+  /* ─────────────────────────────────────────
+     MOBILE FAB + PICKER
+  ───────────────────────────────────────── */
+  const fab = document.createElement("button");
+  fab.id = "mg-fab";
+  fab.setAttribute("aria-label", "Open games");
+  fab.innerHTML = `<span style="font-size:16px;line-height:1">🎮</span><span>Games</span>`;
+  document.body.appendChild(fab);
+
+  const pickerBackdrop = document.createElement("div");
+  pickerBackdrop.id = "mg-picker-backdrop";
+  document.body.appendChild(pickerBackdrop);
+
+  const picker = document.createElement("div");
+  picker.id = "mg-picker";
+  picker.innerHTML = `
+    <div id="mg-picker-handle"></div>
+    <div id="mg-picker-title">Games</div>
+    <div class="mg-picker-row" data-game="tetris"><span class="mg-picker-icon">🟧</span><span class="mg-picker-name">Tetris</span></div>
+    <div class="mg-picker-row" data-game="snake"><span class="mg-picker-icon">🐍</span><span class="mg-picker-name">Snake</span></div>
+    <div class="mg-picker-row" data-game="2048"><span class="mg-picker-icon">🔢</span><span class="mg-picker-name">2048</span></div>
+    <div class="mg-picker-row" data-game="sudoku"><span class="mg-picker-icon">🔷</span><span class="mg-picker-name">Sudoku</span></div>
+    <div class="mg-picker-row" data-game="chess"><span class="mg-picker-icon">♟</span><span class="mg-picker-name">Chess</span></div>
+  `;
+  document.body.appendChild(picker);
+
+  function openPicker() {
+    pickerBackdrop.classList.add("open");
+    picker.classList.add("open");
+  }
+  function closePicker() {
+    pickerBackdrop.classList.remove("open");
+    picker.classList.remove("open");
+  }
+
+  fab.addEventListener("click", openPicker);
+  pickerBackdrop.addEventListener("click", closePicker);
+  picker.querySelectorAll(".mg-picker-row").forEach(row => {
+    row.addEventListener("click", () => {
+      closePicker();
+      window.mgOpen(row.dataset.game);
+    });
+  });
 
   /* ─────────────────────────────────────────
      SIDEBAR PANEL HTML
@@ -312,7 +449,9 @@
     frame.src = g.file;
     overlay.classList.add("open");
     document.body.style.overflow = "hidden";
-    showToast(g.icon + " " + g.name + " — Press Esc to close");
+    // auto-fullscreen on small screens
+    if (window.innerWidth <= 860 && !isFullscreen) window.mgToggleFull();
+    showToast(g.icon + " " + g.name + " — tap ✕ to close");
   };
 
   window.mgClose = function () {

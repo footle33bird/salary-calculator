@@ -1,4 +1,4 @@
-<html lang="en" data-theme="dark">
+﻿<html lang="en" data-theme="dark">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -24,10 +24,10 @@
         --border2: rgba(255, 255, 255, 0.14);
         --text: #f0ede8;
         --muted: rgba(240, 237, 232, 0.45);
-        --accent: #c8a96e;
-        --accent-dim: rgba(200, 169, 110, 0.12);
-        --accent-border: rgba(200, 169, 110, 0.3);
-        --accent-text: #0a0a0a;
+        --accent: #009de0;
+        --accent-dim: rgba(0, 157, 224, 0.12);
+        --accent-border: rgba(0, 157, 224, 0.3);
+        --accent-text: #ffffff;
         --danger: #e06060;
         --success: #6ec88a;
       }
@@ -39,9 +39,9 @@
         --border2: rgba(0, 0, 0, 0.16);
         --text: #1a1814;
         --muted: rgba(26, 24, 20, 0.45);
-        --accent: #9e7a3f;
-        --accent-dim: rgba(158, 122, 63, 0.1);
-        --accent-border: rgba(158, 122, 63, 0.3);
+        --accent: #0085c0;
+        --accent-dim: rgba(0, 133, 192, 0.1);
+        --accent-border: rgba(0, 133, 192, 0.3);
         --accent-text: #fff;
         --danger: #c0392b;
         --success: #27704a;
@@ -139,42 +139,6 @@
         border-radius: 100px;
         transition: width 0.3s ease;
         width: 0%;
-      }
-
-      .ctrl-box {
-        background: var(--surface);
-        border: 1px solid var(--border);
-        border-radius: 8px;
-        padding: 9px 11px;
-      }
-      .ctrl-title {
-        font-size: 7px;
-        letter-spacing: 0.22em;
-        text-transform: uppercase;
-        color: var(--muted);
-        margin-bottom: 8px;
-      }
-      .ctrl-row {
-        display: flex;
-        align-items: center;
-        gap: 5px;
-        margin-bottom: 4px;
-      }
-      .ctrl-key {
-        background: var(--surface2);
-        border: 1px solid var(--border2);
-        border-radius: 3px;
-        font-size: 7px;
-        color: var(--accent);
-        padding: 1px 4px;
-        min-width: 18px;
-        text-align: center;
-        flex-shrink: 0;
-      }
-      .ctrl-desc {
-        font-size: 7px;
-        color: var(--muted);
-        letter-spacing: 0.05em;
       }
 
       /* ── BOARD ── */
@@ -275,6 +239,79 @@
         display: block;
         margin: 0 auto;
       }
+
+      /* ── SETTINGS ── */
+      .btn-sm {
+        background: transparent;
+        border: 1px solid var(--border2);
+        border-radius: 3px;
+        font-family: "DM Mono", monospace;
+        font-size: 7px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--muted);
+        padding: 4px 8px;
+        cursor: pointer;
+        transition: all 0.15s;
+        width: 100%;
+        margin-top: 6px;
+      }
+      .btn-sm:hover {
+        border-color: var(--accent-border);
+        color: var(--accent);
+      }
+      .settings-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+      }
+      .settings-label {
+        font-size: 8px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--muted);
+        flex: 1;
+      }
+      .key-btn {
+        background: var(--surface2);
+        border: 1px solid var(--border2);
+        border-radius: 4px;
+        font-family: "DM Mono", monospace;
+        font-size: 8px;
+        color: var(--accent);
+        padding: 4px 0;
+        width: 60px;
+        text-align: center;
+        cursor: pointer;
+        transition: all 0.15s;
+        flex-shrink: 0;
+      }
+      .key-btn:hover {
+        border-color: var(--accent-border);
+      }
+      .key-btn.listening {
+        border-color: var(--accent);
+        background: var(--accent-dim);
+        color: var(--text);
+        animation: kpulse 0.65s ease infinite alternate;
+      }
+      @keyframes kpulse {
+        from {
+          opacity: 1;
+        }
+        to {
+          opacity: 0.3;
+        }
+      }
+      .settings-note {
+        font-size: 7px;
+        color: var(--accent);
+        text-align: center;
+        letter-spacing: 0.06em;
+        min-height: 14px;
+        margin-top: 6px;
+      }
     </style>
   </head>
   <body>
@@ -301,36 +338,6 @@
             <div class="stat-label">Best</div>
             <div class="stat-value sm" id="best-display">0</div>
           </div>
-          <div class="ctrl-box">
-            <div class="ctrl-title">Controls</div>
-            <div class="ctrl-row">
-              <span class="ctrl-key">←→</span
-              ><span class="ctrl-desc">Move</span>
-            </div>
-            <div class="ctrl-row">
-              <span class="ctrl-key">↓</span
-              ><span class="ctrl-desc">Soft drop</span>
-            </div>
-            <div class="ctrl-row">
-              <span class="ctrl-key">↑</span
-              ><span class="ctrl-desc">Hard drop</span>
-            </div>
-            <div class="ctrl-row">
-              <span class="ctrl-key">Q</span
-              ><span class="ctrl-desc">Rotate ↺</span>
-            </div>
-            <div class="ctrl-row">
-              <span class="ctrl-key">E</span
-              ><span class="ctrl-desc">Rotate ↻</span>
-            </div>
-            <div class="ctrl-row">
-              <span class="ctrl-key">C</span><span class="ctrl-desc">Hold</span>
-            </div>
-            <div class="ctrl-row">
-              <span class="ctrl-key">P</span
-              ><span class="ctrl-desc">Pause</span>
-            </div>
-          </div>
         </div>
 
         <!-- BOARD -->
@@ -352,6 +359,40 @@
             <div class="ov-score" id="final-score">0</div>
             <button class="btn-go" id="btn-restart">Play Again</button>
           </div>
+          <div class="overlay hidden" id="ov-settings">
+            <div class="ov-title" style="font-size: 22px; margin-bottom: 2px">
+              Controls
+            </div>
+            <div class="ov-sub" style="margin-bottom: 10px">
+              Click a key to rebind · Esc to cancel
+            </div>
+            <div
+              id="settings-list"
+              style="
+                width: 216px;
+                display: flex;
+                flex-direction: column;
+                gap: 5px;
+              "
+            ></div>
+            <div class="settings-note" id="settings-note"></div>
+            <div style="display: flex; gap: 8px; margin-top: 12px">
+              <button
+                class="btn-go"
+                id="btn-reset-keys"
+                style="
+                  background: transparent;
+                  border: 1px solid var(--border2);
+                  color: var(--muted);
+                  font-size: 8px;
+                  padding: 6px 14px;
+                "
+              >
+                Reset
+              </button>
+              <button class="btn-go" id="btn-close-settings">Close</button>
+            </div>
+          </div>
         </div>
 
         <!-- RIGHT -->
@@ -367,7 +408,11 @@
           </div>
           <div class="side-box">
             <div class="side-label">
-              Hold <span style="font-size: 6px; opacity: 0.6">(C)</span>
+              Hold
+              <span
+                id="hold-label-key"
+                style="font-size: 6px; opacity: 0.6"
+              ></span>
             </div>
             <canvas
               class="mini"
@@ -376,6 +421,13 @@
               height="72"
             ></canvas>
           </div>
+          <button
+            class="btn-sm"
+            id="btn-open-settings"
+            style="margin-top: auto"
+          >
+            ⚙ Controls
+          </button>
         </div>
       </div>
       <!-- /scaler-inner -->
@@ -408,7 +460,7 @@
 
         const COLORS = {
           I: "#5BA4CF",
-          O: "#c8a96e",
+          O: "#f0c040",
           T: "#9b72c8",
           S: "#6ec88a",
           Z: "#e06060",
@@ -578,6 +630,60 @@
         };
         const PTYPES = Object.keys(PIECES);
         const LINE_SCORES = [0, 100, 300, 500, 800];
+
+        /* ── KEY CONFIG ── */
+        const DEFAULT_KEYS = {
+          left: "ArrowLeft",
+          right: "ArrowRight",
+          softDrop: "ArrowDown",
+          hardDrop: " ",
+          rotLeft: "q",
+          rotRight: "e",
+          hold: "x",
+          pause: "p",
+        };
+        const KEY_LABELS = {
+          left: "Move Left",
+          right: "Move Right",
+          softDrop: "Soft Drop",
+          hardDrop: "Hard Drop",
+          rotLeft: "Rotate ↺",
+          rotRight: "Rotate ↻",
+          hold: "Hold",
+          pause: "Pause",
+        };
+        let keys = Object.assign({}, DEFAULT_KEYS);
+        try {
+          const saved = JSON.parse(localStorage.getItem("tetris_keys") || "{}");
+          Object.keys(DEFAULT_KEYS).forEach((k) => {
+            if (saved[k]) keys[k] = saved[k];
+          });
+        } catch (_) {}
+
+        function saveKeys() {
+          localStorage.setItem("tetris_keys", JSON.stringify(keys));
+        }
+        function displayKey(k) {
+          if (!k) return "—";
+          const m = {
+            " ": "SPC",
+            ArrowLeft: "←",
+            ArrowRight: "→",
+            ArrowUp: "↑",
+            ArrowDown: "↓",
+            Escape: "ESC",
+            Enter: "ENT",
+            Backspace: "BSP",
+          };
+          return m[k] || k.toUpperCase();
+        }
+        function matchKey(pressed, binding) {
+          if (!binding) return false;
+          if (pressed === binding) return true;
+          if (pressed.length === 1 && binding.length === 1)
+            return pressed.toLowerCase() === binding.toLowerCase();
+          return false;
+        }
 
         /* ── CANVAS ── */
         const canvas = document.getElementById("board");
@@ -857,10 +963,13 @@
             if (cnt >= 6) {
               clearInterval(iv);
               flashing = false;
-              cleared.forEach((row) => {
-                board.splice(row, 1);
-                board.unshift(Array(COLS).fill(null));
-              });
+              const clearedSet = new Set(cleared);
+              const kept = board.filter((_, r) => !clearedSet.has(r));
+              board.splice(
+                0, ROWS,
+                ...Array.from({ length: cleared.length }, () => Array(COLS).fill(null)),
+                ...kept,
+              );
               lines += cleared.length;
               score += LINE_SCORES[cleared.length] * level;
               level = Math.floor(lines / 10) + 1;
@@ -1077,80 +1186,196 @@
         }
 
         document.addEventListener("keydown", (e) => {
-          if (gamePaused && e.key !== "p" && e.key !== "P") return;
-          switch (e.key) {
-            case "ArrowLeft":
-            case "a":
-            case "A":
-              e.preventDefault();
-              startDAS(() => {
-                if (gameRunning && !gamePaused) {
-                  moveL();
-                  draw();
-                }
-              });
-              break;
-            case "ArrowRight":
-            case "d":
-            case "D":
-              e.preventDefault();
-              startDAS(() => {
-                if (gameRunning && !gamePaused) {
-                  moveR();
-                  draw();
-                }
-              });
-              break;
-            case "ArrowDown":
-              e.preventDefault();
-              if (gameRunning && !gamePaused) {
-                softDrop();
-                draw();
-              }
-              break;
-            case "ArrowUp":
-              e.preventDefault();
-              if (gameRunning && !gamePaused) {
-                hardDrop();
-                draw();
-              }
-              break;
-            case "q":
-            case "Q":
-              e.preventDefault();
-              if (gameRunning && !gamePaused) {
-                tryRotate(-1);
-                draw();
-              }
-              break;
-            case "e":
-            case "E":
-              e.preventDefault();
-              if (gameRunning && !gamePaused) {
-                tryRotate(1);
-                draw();
-              }
-              break;
-            case "c":
-            case "C":
-              if (gameRunning && !gamePaused) {
-                doHold();
-                draw();
-                drawMini(nextCtx, next, 84, 72);
-              }
-              break;
-            case "p":
-            case "P":
-              togglePause();
-              break;
+          // Settings rebinding mode
+          if (listeningFor) {
+            e.preventDefault();
+            if (e.key === "Escape") {
+              stopListening();
+              return;
+            }
+            const MODS = ["Control", "Shift", "Alt", "Meta", "CapsLock", "Tab"];
+            if (MODS.includes(e.key)) return;
+            // clear any duplicate binding
+            for (const act in keys)
+              if (act !== listeningFor && matchKey(e.key, keys[act]))
+                keys[act] = "";
+            keys[listeningFor] = e.key;
+            saveKeys();
+            stopListening();
+            return;
+          }
+          // Settings open but not listening — eat all keys except Escape
+          if (settingsOpen) {
+            if (e.key === "Escape") closeSettings();
+            e.preventDefault();
+            return;
+          }
+          const k = e.key;
+          if (matchKey(k, keys.pause)) {
+            togglePause();
+            return;
+          }
+          if (gamePaused || !gameRunning) return;
+
+          if (matchKey(k, keys.left)) {
+            e.preventDefault();
+            startDAS(() => {
+              moveL();
+              draw();
+            });
+          } else if (matchKey(k, keys.right)) {
+            e.preventDefault();
+            startDAS(() => {
+              moveR();
+              draw();
+            });
+          } else if (matchKey(k, keys.softDrop)) {
+            e.preventDefault();
+            softDrop();
+            draw();
+          } else if (matchKey(k, keys.hardDrop)) {
+            e.preventDefault();
+            hardDrop();
+            draw();
+          } else if (matchKey(k, keys.rotLeft)) {
+            e.preventDefault();
+            tryRotate(-1);
+            draw();
+          } else if (matchKey(k, keys.rotRight) || k === "ArrowUp") {
+            e.preventDefault();
+            tryRotate(1);
+            draw();
+          } else if (matchKey(k, keys.hold)) {
+            doHold();
+            draw();
+            drawMini(nextCtx, next, 84, 72);
           }
         });
+
         document.addEventListener("keyup", (e) => {
-          if (["ArrowLeft", "ArrowRight", "a", "A", "d", "D"].includes(e.key))
+          if (matchKey(e.key, keys.left) || matchKey(e.key, keys.right))
             stopDAS();
         });
 
+        /* ── TOUCH CONTROLS ── */
+        (function () {
+          let tx0 = 0, ty0 = 0, tMoved = false;
+          const SWIPE = 28;
+
+          canvas.addEventListener("touchstart", (e) => {
+            e.preventDefault();
+            tx0 = e.touches[0].clientX;
+            ty0 = e.touches[0].clientY;
+            tMoved = false;
+          }, { passive: false });
+
+          canvas.addEventListener("touchmove", (e) => {
+            e.preventDefault();
+            if (!gameRunning || gamePaused) return;
+            const dx = e.touches[0].clientX - tx0;
+            const dy = e.touches[0].clientY - ty0;
+            if (!tMoved && Math.abs(dx) > SWIPE) {
+              tMoved = true;
+              if (dx < 0) { moveL(); } else { moveR(); }
+              tx0 = e.touches[0].clientX;
+              draw();
+            }
+            if (!tMoved && dy > SWIPE) {
+              tMoved = true;
+              hardDrop();
+              draw();
+            }
+          }, { passive: false });
+
+          canvas.addEventListener("touchend", (e) => {
+            e.preventDefault();
+            if (!gameRunning || gamePaused) return;
+            const dx = e.changedTouches[0].clientX - tx0;
+            const dy = e.changedTouches[0].clientY - ty0;
+            if (!tMoved) {
+              if (dy < -SWIPE) {
+                doHold(); draw(); drawMini(nextCtx, next, 84, 72);
+              } else {
+                tryRotate(1); draw();
+              }
+            }
+          }, { passive: false });
+        })();
+
+        /* ── SETTINGS ── */
+        let listeningFor = null;
+        let settingsOpen = false;
+        let settingsPrevOv = null;
+
+        const ACTION_LABELS = {
+          left: "Move Left",
+          right: "Move Right",
+          softDrop: "Soft Drop",
+          hardDrop: "Hard Drop",
+          rotLeft: "Rotate Left",
+          rotRight: "Rotate Right",
+          hold: "Hold",
+          pause: "Pause",
+        };
+
+        function renderSettingsList() {
+          const list = document.getElementById("settings-list");
+          list.innerHTML = Object.keys(ACTION_LABELS)
+            .map((act) => {
+              const isListening = listeningFor === act;
+              return `<div class="settings-row">
+              <span class="settings-label">${ACTION_LABELS[act]}</span>
+              <button class="key-btn${isListening ? " listening" : ""}" data-act="${act}">${isListening ? "…" : displayKey(keys[act]) || "—"}</button>
+            </div>`;
+            })
+            .join("");
+          list.querySelectorAll(".key-btn").forEach((btn) => {
+            btn.addEventListener("click", () =>
+              startListening(btn.dataset.act),
+            );
+          });
+        }
+
+        function startListening(action) {
+          listeningFor = action;
+          document.getElementById("settings-note").textContent = "";
+          renderSettingsList();
+        }
+
+        function stopListening() {
+          listeningFor = null;
+          renderSettingsList();
+        }
+
+        function openSettings() {
+          settingsOpen = true;
+          const overlays = ["ov-start", "ov-pause", "ov-gameover"];
+          settingsPrevOv =
+            overlays.find(
+              (id) => !document.getElementById(id).classList.contains("hidden"),
+            ) || null;
+          if (settingsPrevOv)
+            document.getElementById(settingsPrevOv).classList.add("hidden");
+          if (!gamePaused && gameRunning) togglePause();
+          listeningFor = null;
+          renderSettingsList();
+          document.getElementById("settings-note").textContent = "";
+          document.getElementById("ov-settings").classList.remove("hidden");
+        }
+
+        function closeSettings() {
+          listeningFor = null;
+          document.getElementById("ov-settings").classList.add("hidden");
+          if (settingsPrevOv)
+            document.getElementById(settingsPrevOv).classList.remove("hidden");
+          settingsPrevOv = null;
+          settingsOpen = false;
+        }
+
         /* ── BUTTONS ── */
+        document
+          .getElementById("btn-open-settings")
+          .addEventListener("click", openSettings);
         document
           .getElementById("btn-start")
           .addEventListener("click", startGame);
@@ -1160,6 +1385,19 @@
         document
           .getElementById("btn-restart")
           .addEventListener("click", startGame);
+        document
+          .getElementById("btn-reset-keys")
+          .addEventListener("click", () => {
+            keys = Object.assign({}, DEFAULT_KEYS);
+            saveKeys();
+            listeningFor = null;
+            renderSettingsList();
+            document.getElementById("settings-note").textContent =
+              "Keys reset to defaults.";
+          });
+        document
+          .getElementById("btn-close-settings")
+          .addEventListener("click", closeSettings);
 
         /* ── THEME SYNC ── */
         try {

@@ -66,11 +66,18 @@ const SA_NET = [1297.52, 1401, 1427],
 const SL_NET = [1687.2, 1805, 1805],
   SL_GROSS = [2152, 2302, 2302];
 
+const COMPANY_COVERS = 62;
+const INS_PREMIUMS = {
+  L:  { base: 62,  two: 130, full: 205 },
+  XL: { base: 95,  two: 199, full: 314 },
+};
+
 let state = {
   role: null,
   months: null,
   monthIdx: null,
-  insXL: false,
+  insType: "L",
+  insFamilyAddon: null,
   fitpassCount: 0,
   snapCount: 0,
   unpaidLeavesCount: 0,
@@ -134,9 +141,113 @@ function selectRole(el) {
   document.getElementById("roleErr").style.display = "none";
 }
 
-function toggleIns() {
-  state.insXL = !state.insXL;
-  document.getElementById("insToggle").classList.toggle("active", state.insXL);
+function getInsuranceDeduction() {
+  if (!state.insType) return 0;
+  const plan = INS_PREMIUMS[state.insType];
+  const raw =
+    state.insFamilyAddon === "two"
+      ? plan.two
+      : state.insFamilyAddon === "full"
+        ? plan.full
+        : plan.base;
+  return raw - COMPANY_COVERS;
+}
+
+function selectInsPlan(type) {
+  state.insType = type;
+  state.insFamilyAddon = null;
+
+  ["insLRow", "insXLRow"].forEach((id) =>
+    document.getElementById(id).classList.remove("active"),
+  );
+  document.getElementById(type === "XL" ? "insXLRow" : "insLRow").classList.add("active");
+
+  syncFamilyMeta();
+  ["insNoFamilyRow", "insTwoMemberRow", "insFullFamilyRow"].forEach((id) =>
+    document.getElementById(id).classList.remove("active"),
+  );
+  document.getElementById("insNoFamilyRow").classList.add("active");
+}
+
+function selectInsFamilyAddon(addon) {
+  state.insFamilyAddon = addon;
+  ["insNoFamilyRow", "insTwoMemberRow", "insFullFamilyRow"].forEach((id) =>
+    document.getElementById(id).classList.remove("active"),
+  );
+  const rowId =
+    addon === "two"
+      ? "insTwoMemberRow"
+      : addon === "full"
+        ? "insFullFamilyRow"
+        : "insNoFamilyRow";
+  document.getElementById(rowId).classList.add("active");
+}
+
+function syncFamilyMeta() {
+  if (!state.insType) return;
+  const plan = INS_PREMIUMS[state.insType];
+  const baseCost = plan.base - COMPANY_COVERS;
+  const twoCost = plan.two - COMPANY_COVERS;
+  const fullCost = plan.full - COMPANY_COVERS;
+  document.getElementById("insNoFamilyMeta").textContent =
+    baseCost === 0 ? "No deduction" : `−33.00 GEL / month`;
+  document.getElementById("insTwoMemberMeta").textContent =
+    `−${twoCost.toFixed(2)} GEL / month`;
+  document.getElementById("insFullFamilyMeta").textContent =
+    `−${fullCost.toFixed(2)} GEL / month`;
+}
+
+// Result-page insurance handlers (recalculate on change)
+function resSelectInsPlan(type) {
+  state.insType = type;
+  state.insFamilyAddon = null;
+  calculate();
+}
+
+function resSelectInsFamilyAddon(addon) {
+  state.insFamilyAddon = addon;
+  calculate();
+}
+
+function renderInsuranceEditRows() {
+  const plan = state.insType ? INS_PREMIUMS[state.insType] : null;
+  const baseCost = plan ? plan.base - COMPANY_COVERS : 0;
+  const twoCost = plan ? plan.two - COMPANY_COVERS : 0;
+  const fullCost = plan ? plan.full - COMPANY_COVERS : 0;
+
+  const lA = state.insType === "L" ? "active" : "";
+  const xlA = state.insType === "XL" ? "active" : "";
+  const noFamilyA = !state.insFamilyAddon ? "active" : "";
+  const twoA = state.insFamilyAddon === "two" ? "active" : "";
+  const fullA = state.insFamilyAddon === "full" ? "active" : "";
+  const noFamilyMeta =
+    baseCost === 0 ? "No deduction" : `−${baseCost.toFixed(2)} GEL / month`;
+
+  return `
+    <div class="toggle-row ${lA}" onclick="resSelectInsPlan('L')">
+      <div class="toggle-left"><span class="toggle-name">L Insurance</span><span class="toggle-meta">Covered by company · 0.00 GEL / month</span></div>
+      <div class="ins-radio"></div>
+    </div>
+    <div class="toggle-row ${xlA}" onclick="resSelectInsPlan('XL')">
+      <div class="toggle-left"><span class="toggle-name">XL Insurance</span><span class="toggle-meta">−33.00 GEL / month</span></div>
+      <div class="ins-radio"></div>
+    </div>
+    <div class="ins-family-section">
+      <div class="field-label" style="margin-bottom:10px;padding-top:4px;">Family Coverage</div>
+      <div class="toggle-row ${noFamilyA}" onclick="resSelectInsFamilyAddon(null)">
+        <div class="toggle-left"><span class="toggle-name">Individual Only</span><span class="toggle-meta">${noFamilyMeta}</span></div>
+        <div class="ins-radio"></div>
+      </div>
+      <div class="toggle-row ${twoA}" onclick="resSelectInsFamilyAddon('two')">
+        <div class="toggle-left"><span class="toggle-name">Monthly Insurance Premium Per Two-Member Family</span><span class="toggle-meta">−${twoCost.toFixed(2)} GEL / month</span></div>
+        <div class="ins-radio"></div>
+      </div>
+      <div class="toggle-row ${fullA}" onclick="resSelectInsFamilyAddon('full')">
+        <div class="toggle-left"><span class="toggle-name">Monthly Insurance Premium Per Family</span><span class="toggle-meta">−${fullCost.toFixed(2)} GEL / month</span></div>
+        <div class="ins-radio"></div>
+      </div>
+    </div>
+  `;
 }
 
 function incrementFitpass() {
@@ -283,15 +394,13 @@ function syncUnpaidLeavesAndCalculate() {
   calculate();
 }
 
-document.getElementById("months").addEventListener("input", function () {
-  const v = parseInt(this.value);
-  if (!isNaN(v) && v >= 0) {
-    state.months = v;
-    document.getElementById("tierLabel").textContent = "→ " + getTierLabel(v);
-  } else {
-    document.getElementById("tierLabel").textContent = "";
-  }
-});
+function selectTier(tier) {
+  const canonical = [1, 7, 13];
+  state.months = canonical[tier];
+  [0, 1, 2].forEach((i) =>
+    document.getElementById(`tierBtn${i}`).classList.toggle("active", i === tier),
+  );
+}
 
 // ── NAVIGATION ──
 function dotClick(n) {
@@ -308,12 +417,10 @@ function goStep(n) {
     buildMonthGrid();
   }
   if (n === 2) {
-    const m = parseInt(document.getElementById("months").value);
-    if (isNaN(m) || m < 0 || state.monthIdx === null) {
+    if (state.months === null || state.monthIdx === null) {
       document.getElementById("detailErr").style.display = "block";
       return;
     }
-    state.months = m;
     document.getElementById("detailErr").style.display = "none";
   }
   if (n > maxVisited) maxVisited = n;
@@ -405,7 +512,7 @@ function calculate() {
 
   const totalAdds = nightAmt + holidayAmt + holidaynightAmt + otAmt;
   const deductions =
-    (state.insXL ? 33 : 0) +
+    getInsuranceDeduction() +
     state.fitpassCount * 88 +
     state.snapCount * 149 +
     unpaidLeavesAmt;
@@ -482,14 +589,24 @@ function renderResult(
           </div>
           <div style="text-align:right">
             <div class="result-label">Base (net)</div>
-            <div style="font-family:'DM Mono',monospace;font-size:16px;color:var(--text)">${base.toFixed(2)} ₾</div>
+            <div style="font-family:'Nunito',sans-serif;font-weight:600;font-size:16px;color:var(--text)">${base.toFixed(2)} ₾</div>
           </div>
         </div>
         <div class="result-body">
           <div class="result-row"><span class="result-row-label">Base Salary</span><span class="result-row-val">${base.toFixed(2)} ₾</span></div>
           ${addRows}
           ${totalAdds > 0 ? `<div class="result-row"><span class="result-row-label">Total Additions</span><span class="result-row-val positive">+${totalAdds.toFixed(2)} ₾</span></div>` : ""}
-          ${state.insXL ? `<div class="result-row"><span class="result-row-label">XL Insurance</span><span class="result-row-val negative">−33.00 ₾</span></div>` : ""}
+          ${(() => {
+            const insDed = getInsuranceDeduction();
+            if (!state.insType || insDed === 0) return "";
+            const familyLabel =
+              state.insFamilyAddon === "two"
+                ? "Two-Member Family · "
+                : state.insFamilyAddon === "full"
+                  ? "Full Family · "
+                  : "";
+            return `<div class="result-row"><span class="result-row-label">${familyLabel}${state.insType} Insurance</span><span class="result-row-val negative">−${insDed.toFixed(2)} ₾</span></div>`;
+          })()}
           ${state.fitpassCount > 0 ? `<div class="result-row"><span class="result-row-label">FitPass (${state.fitpassCount}x)</span><span class="result-row-val negative">−${(state.fitpassCount * 88).toFixed(2)} ₾</span></div>` : ""}
           ${state.snapCount > 0 ? `<div class="result-row"><span class="result-row-label">Snap (${state.snapCount}x)</span><span class="result-row-val negative">−${(state.snapCount * 149).toFixed(2)} ₾</span></div>` : ""}
           ${state.unpaidLeavesCount > 0 ? `<div class="result-row"><span class="result-row-label">Unpaid Leaves (${state.unpaidLeavesCount}d)</span><span class="result-row-val negative">−${adds.unpaidLeavesAmt.toFixed(2)} ₾</span></div>` : ""}
@@ -502,11 +619,7 @@ function renderResult(
 
       <div class="edit-section">
         <div class="edit-section-title">Edit Deductions</div>
-        <div class="toggle-row ${state.insXL ? "active" : ""}" id="resInsToggle"
-          onclick="state.insXL=!state.insXL;document.getElementById('resInsToggle').classList.toggle('active',state.insXL);calculate();">
-          <div class="toggle-left"><span class="toggle-name">XL Insurance</span><span class="toggle-meta">−33.00 GEL / month</span></div>
-          <div class="toggle-switch"></div>
-        </div>
+        ${renderInsuranceEditRows()}
         <div class="toggle-row">
           <div class="toggle-left">
             <span class="toggle-name">FitPass Subscriptions</span><span class="toggle-meta">−88.00 GEL / subscription / month</span>
@@ -527,7 +640,7 @@ function renderResult(
                 padding: 8px 4px;
                 background: var(--input-bg);
                 color: var(--text);
-                font-family: 'DM Mono', monospace;
+                font-family: 'Nunito', sans-serif; font-weight: 600;
                 text-align: center;
               "
               onchange="syncFitpassAndCalculate()"
@@ -555,7 +668,7 @@ function renderResult(
                 padding: 8px 4px;
                 background: var(--input-bg);
                 color: var(--text);
-                font-family: 'DM Mono', monospace;
+                font-family: 'Nunito', sans-serif; font-weight: 600;
                 text-align: center;
               "
               onchange="syncSnapAndCalculate()"
@@ -583,7 +696,7 @@ function renderResult(
                 padding: 8px 4px;
                 background: var(--input-bg);
                 color: var(--text);
-                font-family: 'DM Mono', monospace;
+                font-family: 'Nunito', sans-serif; font-weight: 600;
                 text-align: center;
               "
               onchange="syncUnpaidLeavesAndCalculate()"
@@ -609,7 +722,8 @@ function resetAll() {
     role: null,
     months: null,
     monthIdx: null,
-    insXL: false,
+    insType: "L",
+    insFamilyAddon: null,
     fitpassCount: 0,
     snapCount: 0,
     unpaidLeavesCount: 0,
@@ -619,9 +733,17 @@ function resetAll() {
   document
     .querySelectorAll(".option-card")
     .forEach((c) => c.classList.remove("selected"));
-  document.getElementById("months").value = "";
-  document.getElementById("tierLabel").textContent = "";
-  document.getElementById("insToggle").classList.remove("active");
+  [0, 1, 2].forEach((i) =>
+    document.getElementById(`tierBtn${i}`).classList.remove("active"),
+  );
+  ["insLRow", "insXLRow"].forEach((id) =>
+    document.getElementById(id).classList.remove("active"),
+  );
+  document.getElementById("insLRow").classList.add("active");
+  ["insNoFamilyRow", "insTwoMemberRow", "insFullFamilyRow"].forEach((id) =>
+    document.getElementById(id).classList.remove("active"),
+  );
+  document.getElementById("insNoFamilyRow").classList.add("active");
   document.getElementById("fitpassCount").value = "";
   document.getElementById("snapCount").value = "";
   document.getElementById("unpaidLeavesCount").value = "";

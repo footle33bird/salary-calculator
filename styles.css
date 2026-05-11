@@ -11,41 +11,41 @@
   --bg: #0a0a0a;
   --surface: #111111;
   --surface2: #181818;
-  --border: rgba(255, 255, 255, 0.08);
-  --border2: rgba(255, 255, 255, 0.15);
-  --text: #f0ede8;
-  --muted: rgba(240, 237, 232, 0.45);
-  --accent: #c8a96e;
-  --accent-dim: rgba(200, 169, 110, 0.12);
-  --accent-border: rgba(200, 169, 110, 0.3);
-  --accent-text: #0a0a0a;
-  --danger: #e06060;
-  --success: #6ec88a;
-  --toggle-bg: #222;
+  --border: rgba(255, 255, 255, 0.07);
+  --border2: rgba(255, 255, 255, 0.13);
+  --text: #f0f0f0;
+  --muted: rgba(240, 240, 240, 0.42);
+  --accent: #009de0;
+  --accent-dim: rgba(0, 157, 224, 0.1);
+  --accent-border: rgba(0, 157, 224, 0.32);
+  --accent-text: #ffffff;
+  --danger: #ef4444;
+  --success: #22c55e;
+  --toggle-bg: #1e1e1e;
   --input-bg: #111111;
-  --result-final-bg: #181818;
-  --result-final-border: rgba(200, 169, 110, 0.25);
+  --result-final-bg: #111111;
+  --result-final-border: rgba(0, 157, 224, 0.22);
 }
 
 /* ── LIGHT THEME ── */
 [data-theme="light"] {
-  --bg: #f7f5f0;
+  --bg: #f5f7fa;
   --surface: #ffffff;
-  --surface2: #f0ede6;
+  --surface2: #edf2f7;
   --border: rgba(0, 0, 0, 0.08);
-  --border2: rgba(0, 0, 0, 0.16);
-  --text: #1a1814;
-  --muted: rgba(26, 24, 20, 0.45);
-  --accent: #9e7a3f;
-  --accent-dim: rgba(158, 122, 63, 0.1);
-  --accent-border: rgba(158, 122, 63, 0.3);
+  --border2: rgba(0, 0, 0, 0.14);
+  --text: #0d1117;
+  --muted: rgba(13, 17, 23, 0.48);
+  --accent: #0085c0;
+  --accent-dim: rgba(0, 133, 192, 0.1);
+  --accent-border: rgba(0, 133, 192, 0.3);
   --accent-text: #ffffff;
-  --danger: #c0392b;
-  --success: #27704a;
-  --toggle-bg: #e8e4dc;
+  --danger: #dc2626;
+  --success: #16a34a;
+  --toggle-bg: #e2e8f0;
   --input-bg: #ffffff;
-  --result-final-bg: #fdf9f2;
-  --result-final-border: rgba(158, 122, 63, 0.25);
+  --result-final-bg: #eff8fd;
+  --result-final-border: rgba(0, 133, 192, 0.2);
 }
 
 html {
@@ -54,23 +54,12 @@ html {
 body {
   background: var(--bg);
   color: var(--text);
-  font-family: "Inter", sans-serif;
+  font-family: "Nunito", sans-serif;
   min-height: 100vh;
   overflow-x: hidden;
   transition:
     background 0.3s ease,
     color 0.3s ease;
-}
-
-/* grain overlay */
-body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: 0;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.035'/%3E%3C/svg%3E");
-  opacity: 0.5;
 }
 
 .app {
@@ -95,9 +84,10 @@ body::before {
   align-items: center;
   gap: 8px;
   cursor: pointer;
-  font-family: "DM Mono", monospace;
+  font-family: "Nunito", sans-serif;
+  font-weight: 700;
   font-size: 10px;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.04em;
   color: var(--muted);
   transition: all 0.2s ease;
   user-select: none;
@@ -116,27 +106,27 @@ body::before {
   margin-bottom: 56px;
 }
 .header-eyebrow {
-  font-family: "DM Mono", monospace;
+  font-family: "Nunito", sans-serif;
+  font-weight: 800;
   font-size: 10px;
-  letter-spacing: 0.2em;
+  letter-spacing: 0.1em;
   color: var(--accent);
   text-transform: uppercase;
   margin-bottom: 16px;
 }
 .header-title {
-  font-family: "Cormorant Garamond", Georgia, serif;
+  font-family: "Nunito", sans-serif;
   font-size: 52px;
-  font-weight: 300;
-  font-style: italic;
+  font-weight: 900;
   line-height: 1.05;
   color: var(--text);
-  letter-spacing: -0.02em;
+  letter-spacing: -0.03em;
 }
 .header-subtitle {
   margin-top: 12px;
   font-size: 13px;
   color: var(--muted);
-  font-weight: 300;
+  font-weight: 400;
   letter-spacing: 0.02em;
 }
 
@@ -167,7 +157,8 @@ body::before {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-family: "DM Mono", monospace;
+  font-family: "Nunito", sans-serif;
+  font-weight: 700;
   font-size: 10px;
   color: var(--muted);
   position: relative;
@@ -211,9 +202,10 @@ body::before {
   margin-bottom: 36px;
 }
 .step-label {
-  font-family: "DM Mono", monospace;
+  font-family: "Nunito", sans-serif;
+  font-weight: 700;
   font-size: 9px;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.04em;
   color: var(--muted);
   text-transform: uppercase;
   text-align: center;
@@ -257,18 +249,19 @@ body::before {
 }
 
 .step-title {
-  font-family: "Cormorant Garamond", Georgia, serif;
+  font-family: "Nunito", sans-serif;
   font-size: 32px;
-  font-weight: 300;
+  font-weight: 800;
   color: var(--text);
   margin-bottom: 6px;
   line-height: 1.2;
+  letter-spacing: -0.02em;
 }
 .step-hint {
-  font-size: 12px;
+  font-size: 13px;
   color: var(--muted);
   margin-bottom: 32px;
-  font-weight: 300;
+  font-weight: 400;
 }
 
 /* ── ROLE CARDS ── */
@@ -281,7 +274,7 @@ body::before {
 .option-card {
   padding: 22px 16px;
   border: 1px solid var(--border);
-  border-radius: 12px;
+  border-radius: 16px;
   background: var(--surface);
   cursor: pointer;
   text-align: center;
@@ -299,6 +292,7 @@ body::before {
 }
 .option-card:hover {
   border-color: var(--border2);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
 }
 .option-card:hover::before {
   opacity: 0.6;
@@ -306,14 +300,15 @@ body::before {
 .option-card.selected {
   border-color: var(--accent);
   background: var(--surface2);
+  box-shadow: 0 0 0 2px var(--accent-dim);
 }
 .option-card.selected::before {
   opacity: 1;
 }
 .option-badge {
-  font-family: "DM Mono", monospace;
+  font-family: "Nunito", sans-serif;
   font-size: 20px;
-  font-weight: 500;
+  font-weight: 900;
   color: var(--accent);
   display: block;
   margin-bottom: 8px;
@@ -321,8 +316,9 @@ body::before {
 }
 .option-label {
   font-size: 11px;
+  font-weight: 700;
   color: var(--muted);
-  letter-spacing: 0.08em;
+  letter-spacing: 0.04em;
   position: relative;
 }
 .option-sublabel {
@@ -330,7 +326,7 @@ body::before {
   color: var(--muted);
   opacity: 0.55;
   margin-top: 4px;
-  font-family: "DM Mono", monospace;
+  font-family: "Nunito", sans-serif;
   position: relative;
 }
 
@@ -339,9 +335,10 @@ body::before {
   margin-bottom: 24px;
 }
 .field-label {
-  font-family: "DM Mono", monospace;
+  font-family: "Nunito", sans-serif;
+  font-weight: 800;
   font-size: 10px;
-  letter-spacing: 0.15em;
+  letter-spacing: 0.06em;
   color: var(--muted);
   text-transform: uppercase;
   display: block;
@@ -357,17 +354,20 @@ input[type="number"],
 select {
   background: var(--input-bg);
   border: 1px solid var(--border2);
-  border-radius: 6px;
+  border-radius: 12px;
   color: var(--text);
-  font-family: "DM Mono", monospace;
+  font-family: "Nunito", sans-serif;
   font-size: 14px;
-  padding: 10px 14px;
+  font-weight: 600;
+  padding: 11px 14px;
   width: 100%;
   outline: none;
   transition:
     border-color 0.2s ease,
-    background 0.3s ease;
+    background 0.3s ease,
+    box-shadow 0.2s ease;
   -moz-appearance: textfield;
+  appearance: textfield;
 }
 input[type="number"]::-webkit-outer-spin-button,
 input[type="number"]::-webkit-inner-spin-button {
@@ -376,6 +376,7 @@ input[type="number"]::-webkit-inner-spin-button {
 input[type="number"]:focus,
 select:focus {
   border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-dim);
 }
 input[type="number"]::placeholder {
   color: var(--muted);
@@ -385,7 +386,7 @@ input[type="number"]::placeholder {
 select {
   -webkit-appearance: none;
   appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23c8a96e' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23009de0' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: right 14px center;
   cursor: pointer;
@@ -394,22 +395,70 @@ select option {
   background: var(--surface);
 }
 
+/* ── TIER QUICK-SELECT ── */
+.tier-btns {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-bottom: 4px;
+}
+.tier-btn {
+  padding: 14px 10px;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: var(--surface);
+  cursor: pointer;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  transition: all 0.2s ease;
+  user-select: none;
+}
+.tier-btn:hover {
+  border-color: var(--border2);
+  background: var(--surface2);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+.tier-btn.active {
+  border-color: var(--accent);
+  background: var(--accent-dim);
+  box-shadow: 0 0 0 2px var(--accent-dim);
+}
+.tier-btn-name {
+  font-family: "Nunito", sans-serif;
+  font-weight: 800;
+  font-size: 13px;
+  color: var(--text);
+  transition: color 0.2s ease;
+}
+.tier-btn.active .tier-btn-name {
+  color: var(--accent);
+}
+.tier-btn-range {
+  font-family: "Nunito", sans-serif;
+  font-weight: 600;
+  font-size: 10px;
+  color: var(--muted);
+}
+
 /* ── MONTH GRID ── */
 .month-selector {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 8px;
+  gap: 10px;
   margin-bottom: 28px;
 }
 .month-btn {
-  padding: 11px 4px;
+  padding: 16px 6px;
   border: 1px solid var(--border);
-  border-radius: 6px;
+  border-radius: 12px;
   background: var(--surface);
   color: var(--muted);
-  font-family: "DM Mono", monospace;
-  font-size: 9px;
-  letter-spacing: 0.06em;
+  font-family: "Nunito", sans-serif;
+  font-weight: 800;
+  font-size: 11px;
+  letter-spacing: 0.02em;
   text-align: center;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -417,17 +466,20 @@ select option {
 .month-btn:hover {
   border-color: var(--border2);
   color: var(--text);
+  background: var(--surface2);
 }
 .month-btn.selected {
   border-color: var(--accent);
   color: var(--accent);
   background: var(--accent-dim);
+  box-shadow: 0 0 0 2px var(--accent-dim);
 }
 .month-btn .hours {
   display: block;
-  font-size: 8px;
-  opacity: 0.5;
-  margin-top: 3px;
+  font-size: 9px;
+  font-weight: 600;
+  opacity: 0.55;
+  margin-top: 5px;
 }
 
 /* ── DIVIDER ── */
@@ -444,17 +496,19 @@ select option {
   justify-content: space-between;
   padding: 14px 16px;
   border: 1px solid var(--border);
-  border-radius: 6px;
+  border-radius: 14px;
   background: var(--surface);
   margin-bottom: 10px;
   cursor: pointer;
-  transition: border-color 0.2s ease;
+  transition: all 0.2s ease;
 }
 .toggle-row:hover {
   border-color: var(--border2);
+  background: var(--surface2);
 }
 .toggle-row.active {
   border-color: var(--accent-border);
+  background: var(--accent-dim);
 }
 .toggle-left {
   display: flex;
@@ -463,13 +517,14 @@ select option {
 }
 .toggle-name {
   font-size: 13px;
+  font-weight: 700;
   color: var(--text);
-  font-weight: 400;
 }
 .toggle-meta {
   font-size: 10px;
+  font-weight: 600;
   color: var(--muted);
-  font-family: "DM Mono", monospace;
+  font-family: "Nunito", sans-serif;
 }
 .toggle-switch {
   width: 38px;
@@ -493,12 +548,12 @@ select option {
   transition: all 0.2s ease;
 }
 .toggle-row.active .toggle-switch {
-  background: var(--accent-dim);
+  background: var(--accent);
   border-color: var(--accent);
 }
 .toggle-row.active .toggle-switch::after {
   left: 18px;
-  background: var(--accent);
+  background: #ffffff;
 }
 
 /* ── ADDITIONS GRID ── */
@@ -511,17 +566,19 @@ select option {
 .addition-field {
   background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: 6px;
+  border-radius: 14px;
   padding: 14px;
-  transition: border-color 0.2s ease;
+  transition: all 0.2s ease;
 }
 .addition-field:focus-within {
   border-color: var(--accent-border);
+  box-shadow: 0 0 0 3px var(--accent-dim);
 }
 .addition-field label {
-  font-family: "DM Mono", monospace;
+  font-family: "Nunito", sans-serif;
+  font-weight: 800;
   font-size: 9px;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.04em;
   color: var(--muted);
   text-transform: uppercase;
   display: block;
@@ -529,8 +586,9 @@ select option {
 }
 .addition-field .rate {
   font-size: 9px;
+  font-weight: 700;
   color: var(--accent);
-  font-family: "DM Mono", monospace;
+  font-family: "Nunito", sans-serif;
   margin-bottom: 8px;
   display: block;
 }
@@ -539,7 +597,7 @@ select option {
   background: transparent;
   padding: 0;
   font-size: 16px;
-  font-weight: 300;
+  font-weight: 400;
   width: 100%;
 }
 .addition-field input:focus {
@@ -553,10 +611,11 @@ select option {
   align-items: center;
   gap: 8px;
   padding: 13px 28px;
-  border-radius: 6px;
-  font-family: "DM Mono", monospace;
+  border-radius: 100px;
+  font-family: "Nunito", sans-serif;
+  font-weight: 800;
   font-size: 11px;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.05em;
   text-transform: uppercase;
   cursor: pointer;
   transition: all 0.2s ease;
@@ -566,13 +625,13 @@ select option {
   background: var(--accent);
   border-color: var(--accent);
   color: var(--accent-text);
-  font-weight: 500;
 }
 .btn-primary:hover {
   opacity: 0.88;
+  box-shadow: 0 4px 16px rgba(0, 157, 224, 0.35);
 }
 .btn-primary:active {
-  transform: scale(0.98);
+  transform: scale(0.97);
 }
 .btn-ghost {
   background: transparent;
@@ -582,6 +641,7 @@ select option {
 .btn-ghost:hover {
   color: var(--text);
   border-color: var(--accent-border);
+  background: var(--accent-dim);
 }
 .btn-row {
   display: flex;
@@ -594,9 +654,10 @@ select option {
 .result-card {
   background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: 12px;
+  border-radius: 20px;
   overflow: hidden;
   margin-bottom: 20px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
 }
 .result-header {
   padding: 24px 24px 20px;
@@ -606,29 +667,28 @@ select option {
   align-items: flex-start;
 }
 .result-label {
-  font-family: "DM Mono", monospace;
+  font-family: "Nunito", sans-serif;
+  font-weight: 800;
   font-size: 10px;
-  letter-spacing: 0.15em;
+  letter-spacing: 0.08em;
   color: var(--muted);
   text-transform: uppercase;
   margin-bottom: 4px;
 }
 .result-net-amount {
-  font-family: "Cormorant Garamond", Georgia, serif;
+  font-family: "Nunito", sans-serif;
   font-size: 58px;
-  font-weight: 300;
-  font-style: italic;
+  font-weight: 900;
   color: var(--accent);
   line-height: 1;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.03em;
 }
 .result-net-currency {
   font-size: 26px;
   margin-right: 3px;
-  font-style: normal;
 }
 .result-gross {
-  font-family: "DM Mono", monospace;
+  font-family: "Nunito", sans-serif;
   font-size: 11px;
   color: var(--muted);
   opacity: 0.45;
@@ -653,7 +713,8 @@ select option {
   color: var(--muted);
 }
 .result-row-val {
-  font-family: "DM Mono", monospace;
+  font-family: "Nunito", sans-serif;
+  font-weight: 700;
   font-size: 12px;
   color: var(--text);
 }
@@ -664,31 +725,31 @@ select option {
   color: var(--success);
 }
 
-/* Final amount row — styled to match the site */
+/* Final amount row */
 .result-final-row {
   margin-top: 12px;
   padding: 16px 20px;
   background: var(--result-final-bg);
   border: 1px solid var(--result-final-border);
-  border-radius: 8px;
+  border-radius: 14px;
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 .result-final-label {
-  font-family: "DM Mono", monospace;
+  font-family: "Nunito", sans-serif;
+  font-weight: 800;
   font-size: 10px;
-  letter-spacing: 0.15em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--muted);
 }
 .result-final-value {
-  font-family: "Cormorant Garamond", Georgia, serif;
+  font-family: "Nunito", sans-serif;
   font-size: 28px;
-  font-weight: 400;
-  font-style: italic;
+  font-weight: 900;
   color: var(--accent);
-  letter-spacing: -0.01em;
+  letter-spacing: -0.02em;
 }
 
 /* ── CHIPS ── */
@@ -699,14 +760,15 @@ select option {
   margin-bottom: 24px;
 }
 .chip {
-  padding: 6px 12px;
+  padding: 6px 14px;
   border: 1px solid var(--border);
   border-radius: 100px;
-  font-family: "DM Mono", monospace;
+  font-family: "Nunito", sans-serif;
+  font-weight: 700;
   font-size: 10px;
   color: var(--muted);
   background: var(--surface);
-  letter-spacing: 0.05em;
+  letter-spacing: 0.02em;
 }
 .chip.accent {
   border-color: var(--accent-border);
@@ -718,7 +780,7 @@ select option {
 .payment-info {
   background: var(--surface2);
   border: 1px solid var(--border);
-  border-radius: 6px;
+  border-radius: 16px;
   padding: 16px 20px;
   display: flex;
   align-items: center;
@@ -730,10 +792,11 @@ select option {
   flex-shrink: 0;
 }
 .payment-date {
-  font-family: "Cormorant Garamond", Georgia, serif;
+  font-family: "Nunito", sans-serif;
   font-size: 22px;
-  font-weight: 400;
+  font-weight: 800;
   color: var(--accent);
+  letter-spacing: -0.01em;
 }
 .payment-desc {
   font-size: 11px;
@@ -745,14 +808,15 @@ select option {
 .edit-section {
   background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: 12px;
+  border-radius: 20px;
   padding: 20px 24px;
   margin-bottom: 20px;
 }
 .edit-section-title {
-  font-family: "DM Mono", monospace;
+  font-family: "Nunito", sans-serif;
+  font-weight: 800;
   font-size: 10px;
-  letter-spacing: 0.15em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--muted);
   margin-bottom: 16px;
@@ -762,9 +826,10 @@ select option {
 .note-box {
   background: var(--accent-dim);
   border: 1px solid var(--accent-border);
-  border-radius: 6px;
+  border-radius: 14px;
   padding: 12px 16px;
   font-size: 11px;
+  font-weight: 600;
   color: var(--accent);
   margin-bottom: 20px;
   line-height: 1.6;
@@ -772,9 +837,44 @@ select option {
 
 .error {
   font-size: 11px;
+  font-weight: 700;
   color: var(--danger);
   margin-top: 6px;
-  font-family: "DM Mono", monospace;
+  font-family: "Nunito", sans-serif;
+}
+
+/* ── INSURANCE RADIO ── */
+.ins-radio {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  border: 2px solid var(--border2);
+  position: relative;
+  flex-shrink: 0;
+  transition: all 0.2s ease;
+}
+.ins-radio::after {
+  content: "";
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0);
+  transition: transform 0.2s ease;
+}
+.toggle-row.active .ins-radio {
+  border-color: var(--accent);
+}
+.toggle-row.active .ins-radio::after {
+  transform: translate(-50%, -50%) scale(1);
+}
+.ins-family-section {
+  margin-top: 12px;
+  padding-left: 16px;
+  border-left: 2px solid var(--accent-border);
 }
 
 /* ── FITPASS CONTROL ── */
@@ -787,12 +887,12 @@ select option {
   width: 32px;
   height: 32px;
   border: 1px solid var(--border2);
-  border-radius: 6px;
+  border-radius: 10px;
   background: var(--surface);
   color: var(--text);
-  font-family: "DM Mono", monospace;
+  font-family: "Nunito", sans-serif;
   font-size: 14px;
-  font-weight: 500;
+  font-weight: 800;
   cursor: pointer;
   transition: all 0.2s ease;
   display: flex;
@@ -803,6 +903,7 @@ select option {
 .fitpass-btn:hover {
   border-color: var(--accent-border);
   color: var(--accent);
+  background: var(--accent-dim);
 }
 .fitpass-btn:active {
   transform: scale(0.95);
