@@ -354,7 +354,7 @@
 
   fab.addEventListener("click", openPicker);
   pickerBackdrop.addEventListener("click", closePicker);
-  picker.querySelectorAll(".mg-picker-row").forEach(row => {
+  picker.querySelectorAll(".mg-picker-row").forEach((row) => {
     row.addEventListener("click", () => {
       closePicker();
       window.mgOpen(row.dataset.game);

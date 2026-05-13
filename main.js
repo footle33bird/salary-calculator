@@ -68,8 +68,8 @@ const SL_NET = [1687.2, 1805, 1805],
 
 const COMPANY_COVERS = 62;
 const INS_PREMIUMS = {
-  L:  { base: 62,  two: 130, full: 205 },
-  XL: { base: 95,  two: 199, full: 314 },
+  L: { base: 62, two: 130, full: 205 },
+  XL: { base: 95, two: 199, full: 314 },
 };
 
 let state = {
@@ -160,7 +160,9 @@ function selectInsPlan(type) {
   ["insLRow", "insXLRow"].forEach((id) =>
     document.getElementById(id).classList.remove("active"),
   );
-  document.getElementById(type === "XL" ? "insXLRow" : "insLRow").classList.add("active");
+  document
+    .getElementById(type === "XL" ? "insXLRow" : "insLRow")
+    .classList.add("active");
 
   syncFamilyMeta();
   ["insNoFamilyRow", "insTwoMemberRow", "insFullFamilyRow"].forEach((id) =>
@@ -398,7 +400,9 @@ function selectTier(tier) {
   const canonical = [1, 7, 13];
   state.months = canonical[tier];
   [0, 1, 2].forEach((i) =>
-    document.getElementById(`tierBtn${i}`).classList.toggle("active", i === tier),
+    document
+      .getElementById(`tierBtn${i}`)
+      .classList.toggle("active", i === tier),
   );
 }
 
