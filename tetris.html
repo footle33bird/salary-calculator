@@ -1,4 +1,4 @@
-﻿<html lang="en" data-theme="dark">
+<html lang="en" data-theme="dark">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -24,10 +24,10 @@
         --border2: rgba(255, 255, 255, 0.14);
         --text: #f0ede8;
         --muted: rgba(240, 237, 232, 0.45);
-        --accent: #009de0;
-        --accent-dim: rgba(0, 157, 224, 0.12);
-        --accent-border: rgba(0, 157, 224, 0.3);
-        --accent-text: #ffffff;
+        --accent: #c8a96e;
+        --accent-dim: rgba(200, 169, 110, 0.12);
+        --accent-border: rgba(200, 169, 110, 0.3);
+        --accent-text: #0a0a0a;
         --danger: #e06060;
         --success: #6ec88a;
       }
@@ -39,9 +39,9 @@
         --border2: rgba(0, 0, 0, 0.16);
         --text: #1a1814;
         --muted: rgba(26, 24, 20, 0.45);
-        --accent: #0085c0;
-        --accent-dim: rgba(0, 133, 192, 0.1);
-        --accent-border: rgba(0, 133, 192, 0.3);
+        --accent: #9e7a3f;
+        --accent-dim: rgba(158, 122, 63, 0.1);
+        --accent-border: rgba(158, 122, 63, 0.3);
         --accent-text: #fff;
         --danger: #c0392b;
         --success: #27704a;
@@ -460,7 +460,7 @@
 
         const COLORS = {
           I: "#5BA4CF",
-          O: "#f0c040",
+          O: "#c8a96e",
           T: "#9b72c8",
           S: "#6ec88a",
           Z: "#e06060",
@@ -966,11 +966,8 @@
               const clearedSet = new Set(cleared);
               const kept = board.filter((_, r) => !clearedSet.has(r));
               board.splice(
-                0,
-                ROWS,
-                ...Array.from({ length: cleared.length }, () =>
-                  Array(COLS).fill(null),
-                ),
+                0, ROWS,
+                ...Array.from({ length: cleared.length }, () => Array(COLS).fill(null)),
                 ...kept,
               );
               lines += cleared.length;
@@ -1262,68 +1259,47 @@
 
         /* ── TOUCH CONTROLS ── */
         (function () {
-          let tx0 = 0,
-            ty0 = 0,
-            tMoved = false;
+          let tx0 = 0, ty0 = 0, tMoved = false;
           const SWIPE = 28;
 
-          canvas.addEventListener(
-            "touchstart",
-            (e) => {
-              e.preventDefault();
+          canvas.addEventListener("touchstart", (e) => {
+            e.preventDefault();
+            tx0 = e.touches[0].clientX;
+            ty0 = e.touches[0].clientY;
+            tMoved = false;
+          }, { passive: false });
+
+          canvas.addEventListener("touchmove", (e) => {
+            e.preventDefault();
+            if (!gameRunning || gamePaused) return;
+            const dx = e.touches[0].clientX - tx0;
+            const dy = e.touches[0].clientY - ty0;
+            if (!tMoved && Math.abs(dx) > SWIPE) {
+              tMoved = true;
+              if (dx < 0) { moveL(); } else { moveR(); }
               tx0 = e.touches[0].clientX;
-              ty0 = e.touches[0].clientY;
-              tMoved = false;
-            },
-            { passive: false },
-          );
+              draw();
+            }
+            if (!tMoved && dy > SWIPE) {
+              tMoved = true;
+              hardDrop();
+              draw();
+            }
+          }, { passive: false });
 
-          canvas.addEventListener(
-            "touchmove",
-            (e) => {
-              e.preventDefault();
-              if (!gameRunning || gamePaused) return;
-              const dx = e.touches[0].clientX - tx0;
-              const dy = e.touches[0].clientY - ty0;
-              if (!tMoved && Math.abs(dx) > SWIPE) {
-                tMoved = true;
-                if (dx < 0) {
-                  moveL();
-                } else {
-                  moveR();
-                }
-                tx0 = e.touches[0].clientX;
-                draw();
+          canvas.addEventListener("touchend", (e) => {
+            e.preventDefault();
+            if (!gameRunning || gamePaused) return;
+            const dx = e.changedTouches[0].clientX - tx0;
+            const dy = e.changedTouches[0].clientY - ty0;
+            if (!tMoved) {
+              if (dy < -SWIPE) {
+                doHold(); draw(); drawMini(nextCtx, next, 84, 72);
+              } else {
+                tryRotate(1); draw();
               }
-              if (!tMoved && dy > SWIPE) {
-                tMoved = true;
-                hardDrop();
-                draw();
-              }
-            },
-            { passive: false },
-          );
-
-          canvas.addEventListener(
-            "touchend",
-            (e) => {
-              e.preventDefault();
-              if (!gameRunning || gamePaused) return;
-              const dx = e.changedTouches[0].clientX - tx0;
-              const dy = e.changedTouches[0].clientY - ty0;
-              if (!tMoved) {
-                if (dy < -SWIPE) {
-                  doHold();
-                  draw();
-                  drawMini(nextCtx, next, 84, 72);
-                } else {
-                  tryRotate(1);
-                  draw();
-                }
-              }
-            },
-            { passive: false },
-          );
+            }
+          }, { passive: false });
         })();
 
         /* ── SETTINGS ── */

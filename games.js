@@ -49,7 +49,7 @@
     }
     .mg-panel-btn:hover {
       width: 148px;
-      border-color: var(--accent-border, rgba(0,157,224,0.35));
+      border-color: var(--accent-border, rgba(200,169,110,0.35));
       background: var(--surface2, #181818);
       box-shadow: 0 4px 20px rgba(0,0,0,0.3);
     }
@@ -65,7 +65,7 @@
       font-size: 10px;
       letter-spacing: 0.12em;
       text-transform: uppercase;
-      color: var(--accent, #009de0);
+      color: var(--accent, #c8a96e);
       opacity: 0;
       transition: opacity 0.15s ease;
       pointer-events: none;
@@ -99,14 +99,14 @@
       width: min(94vw, 920px);
       height: min(90vh, 740px);
       background: var(--surface, #111);
-      border: 1px solid var(--accent-border, rgba(0,157,224,0.25));
+      border: 1px solid var(--accent-border, rgba(200,169,110,0.25));
       border-radius: 18px;
       display: flex;
       flex-direction: column;
       overflow: hidden;
       box-shadow:
         0 40px 100px rgba(0,0,0,0.7),
-        0 0 0 1px rgba(0,157,224,0.06),
+        0 0 0 1px rgba(200,169,110,0.06),
         inset 0 1px 0 rgba(255,255,255,0.04);
       animation: mgSlideUp 0.3s cubic-bezier(0.22,1,0.36,1);
     }
@@ -137,7 +137,7 @@
       font-size: 11px;
       letter-spacing: 0.15em;
       text-transform: uppercase;
-      color: var(--accent, #009de0);
+      color: var(--accent, #c8a96e);
     }
     #mg-topbar-btns {
       display: flex;
@@ -161,7 +161,7 @@
     }
     .mg-tb-btn:hover {
       color: var(--text, #f0ede8);
-      border-color: var(--accent-border, rgba(0,157,224,0.3));
+      border-color: var(--accent-border, rgba(200,169,110,0.3));
     }
     .mg-tb-btn.close-btn:hover {
       color: #e06060;
@@ -190,13 +190,13 @@
       left: 50%;
       transform: translateX(-50%);
       background: var(--surface, #111);
-      border: 1px solid var(--accent-border, rgba(0,157,224,0.3));
+      border: 1px solid var(--accent-border, rgba(200,169,110,0.3));
       border-radius: 100px;
       padding: 9px 20px;
       font-family: 'DM Mono', monospace;
       font-size: 10px;
       letter-spacing: 0.14em;
-      color: var(--accent, #009de0);
+      color: var(--accent, #c8a96e);
       white-space: nowrap;
       z-index: 9999;
       pointer-events: none;
@@ -217,8 +217,8 @@
       padding: 0 18px 0 14px;
       border-radius: 100px;
       background: var(--surface, #111);
-      border: 1px solid var(--accent-border, rgba(0,157,224,0.35));
-      color: var(--accent, #009de0);
+      border: 1px solid var(--accent-border, rgba(200,169,110,0.35));
+      color: var(--accent, #c8a96e);
       font-family: 'DM Mono', monospace;
       font-size: 11px;
       letter-spacing: 0.1em;
@@ -228,7 +228,7 @@
       align-items: center;
       justify-content: center;
       white-space: nowrap;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.5), 0 0 0 1px rgba(0,157,224,0.08);
+      box-shadow: 0 4px 20px rgba(0,0,0,0.5), 0 0 0 1px rgba(200,169,110,0.08);
       transition: transform 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease;
       backdrop-filter: blur(8px);
       -webkit-backdrop-filter: blur(8px);
@@ -312,7 +312,7 @@
       border-radius: 100px;
     }
     #mg-frame-wrap::-webkit-scrollbar-thumb:hover {
-      background: var(--accent-border, rgba(0,157,224,0.3));
+      background: var(--accent-border, rgba(200,169,110,0.3));
     }
   `;
   document.head.appendChild(style);
@@ -354,7 +354,7 @@
 
   fab.addEventListener("click", openPicker);
   pickerBackdrop.addEventListener("click", closePicker);
-  picker.querySelectorAll(".mg-picker-row").forEach((row) => {
+  picker.querySelectorAll(".mg-picker-row").forEach(row => {
     row.addEventListener("click", () => {
       closePicker();
       window.mgOpen(row.dataset.game);

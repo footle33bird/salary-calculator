@@ -1,4 +1,4 @@
-﻿<!doctype html>
+<!doctype html>
 <html lang="en" data-theme="dark">
   <head>
     <meta charset="UTF-8" />
@@ -24,10 +24,10 @@
         --border2: rgba(255, 255, 255, 0.14);
         --text: #f0ede8;
         --muted: rgba(240, 237, 232, 0.45);
-        --accent: #009de0;
-        --accent-dim: rgba(0, 157, 224, 0.12);
-        --accent-border: rgba(0, 157, 224, 0.3);
-        --accent-text: #ffffff;
+        --accent: #c8a96e;
+        --accent-dim: rgba(200, 169, 110, 0.12);
+        --accent-border: rgba(200, 169, 110, 0.3);
+        --accent-text: #0a0a0a;
         --danger: #e06060;
         --success: #6ec88a;
       }
@@ -39,9 +39,9 @@
         --border2: rgba(0, 0, 0, 0.14);
         --text: #1a1814;
         --muted: rgba(26, 24, 20, 0.45);
-        --accent: #0085c0;
-        --accent-dim: rgba(0, 133, 192, 0.1);
-        --accent-border: rgba(0, 133, 192, 0.3);
+        --accent: #9e7a3f;
+        --accent-dim: rgba(158, 122, 63, 0.1);
+        --accent-border: rgba(158, 122, 63, 0.3);
         --accent-text: #fff;
         --danger: #c0392b;
         --success: #27704a;
@@ -113,7 +113,7 @@
         border: 1px solid var(--accent-border);
         border-radius: 8px;
         background: var(--surface);
-        box-shadow: 0 0 32px rgba(0, 157, 224, 0.06);
+        box-shadow: 0 0 32px rgba(200, 169, 110, 0.06);
       }
 
       /* ── OVERLAY ── */
@@ -552,7 +552,7 @@
 
         // bonus
         if (bonus) {
-          ctx.fillStyle = "#009de0";
+          ctx.fillStyle = "#c8a96e";
           ctx.beginPath();
           ctx.arc(
             bonus.x * CELL + CELL / 2,

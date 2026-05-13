@@ -240,7 +240,7 @@
 
   select {
     -webkit-appearance: none; appearance: none;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23009de0' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23c8a96e' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
     background-repeat: no-repeat; background-position: right 14px center; cursor: pointer;
   }
   select option { background: var(--surface); }
@@ -525,16 +525,10 @@
         </div>
         <div class="field-group">
           <label class="field-label">Insurance Plan</label>
-          <div
-            class="toggle-row active"
-            id="insLRow"
-            onclick="selectInsPlan('L')"
-          >
+          <div class="toggle-row active" id="insLRow" onclick="selectInsPlan('L')">
             <div class="toggle-left">
               <span class="toggle-name">L Insurance</span
-              ><span class="toggle-meta"
-                >Covered by company · 0.00 GEL / month</span
-              >
+              ><span class="toggle-meta">Covered by company · 0.00 GEL / month</span>
             </div>
             <div class="ins-radio"></div>
           </div>
@@ -546,49 +540,25 @@
             <div class="ins-radio"></div>
           </div>
           <div class="ins-family-section" id="insFamilySection">
-            <label
-              class="field-label"
-              style="margin-bottom: 10px; padding-top: 4px"
-              >Family Coverage</label
-            >
-            <div
-              class="toggle-row active"
-              id="insNoFamilyRow"
-              onclick="selectInsFamilyAddon(null)"
-            >
+            <label class="field-label" style="margin-bottom:10px;padding-top:4px;">Family Coverage</label>
+            <div class="toggle-row active" id="insNoFamilyRow" onclick="selectInsFamilyAddon(null)">
               <div class="toggle-left">
                 <span class="toggle-name">Individual Only</span
-                ><span class="toggle-meta" id="insNoFamilyMeta"
-                  >No deduction</span
-                >
+                ><span class="toggle-meta" id="insNoFamilyMeta">No deduction</span>
               </div>
               <div class="ins-radio"></div>
             </div>
-            <div
-              class="toggle-row"
-              id="insTwoMemberRow"
-              onclick="selectInsFamilyAddon('two')"
-            >
+            <div class="toggle-row" id="insTwoMemberRow" onclick="selectInsFamilyAddon('two')">
               <div class="toggle-left">
-                <span class="toggle-name"
-                  >Monthly Insurance Premium Per Two-Member Family</span
-                ><span class="toggle-meta" id="insTwoMemberMeta"
-                  >−68.00 GEL / month</span
-                >
+                <span class="toggle-name">Monthly Insurance Premium Per Two-Member Family</span
+                ><span class="toggle-meta" id="insTwoMemberMeta">−68.00 GEL / month</span>
               </div>
               <div class="ins-radio"></div>
             </div>
-            <div
-              class="toggle-row"
-              id="insFullFamilyRow"
-              onclick="selectInsFamilyAddon('full')"
-            >
+            <div class="toggle-row" id="insFullFamilyRow" onclick="selectInsFamilyAddon('full')">
               <div class="toggle-left">
-                <span class="toggle-name"
-                  >Monthly Insurance Premium Per Family</span
-                ><span class="toggle-meta" id="insFullFamilyMeta"
-                  >−143.00 GEL / month</span
-                >
+                <span class="toggle-name">Monthly Insurance Premium Per Family</span
+                ><span class="toggle-meta" id="insFullFamilyMeta">−143.00 GEL / month</span>
               </div>
               <div class="ins-radio"></div>
             </div>
@@ -620,8 +590,7 @@
                   padding: 8px 4px;
                   background: var(--input-bg);
                   color: var(--text);
-                  font-family: &quot;Nunito&quot;, sans-serif;
-                  font-weight: 600;
+                  font-family: &quot;Nunito&quot;, sans-serif; font-weight: 600;
                   text-align: center;
                 "
               />
@@ -655,8 +624,7 @@
                   padding: 8px 4px;
                   background: var(--input-bg);
                   color: var(--text);
-                  font-family: &quot;Nunito&quot;, sans-serif;
-                  font-weight: 600;
+                  font-family: &quot;Nunito&quot;, sans-serif; font-weight: 600;
                   text-align: center;
                 "
                 onkeydown="handleSnapArrowKeys(event)"
@@ -689,8 +657,7 @@
                   padding: 8px 4px;
                   background: var(--input-bg);
                   color: var(--text);
-                  font-family: &quot;Nunito&quot;, sans-serif;
-                  font-weight: 600;
+                  font-family: &quot;Nunito&quot;, sans-serif; font-weight: 600;
                   text-align: center;
                 "
                 onkeydown="handleUnpaidLeavesArrowKeys(event)"
@@ -844,8 +811,8 @@
           : "LIGHT";
         // Update select SVG arrow color
         const arrow = isDark
-          ? "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%230085c0' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E\")"
-          : "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23009de0' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E\")";
+          ? "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%239e7a3f' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E\")"
+          : "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23c8a96e' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E\")";
         document
           .querySelectorAll("select")
           .forEach((s) => (s.style.backgroundImage = arrow));
